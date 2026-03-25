@@ -352,25 +352,23 @@
 
             {/* 开屏页 */}
             <section className="relative w-full h-[100svh] min-h-[700px] bg-base border-b border-black overflow-hidden flex items-center justify-center pt-16 md:pt-0 reveal">
-              <div className="absolute top-[15%] md:top-[8%] w-full flex justify-center z-10 pointer-events-none px-4">
-                <h1 className="text-[32vw] md:text-[28vw] leading-[0.75] font-black tracking-tighter text-brand-red uppercase">
+              {/* 白色大标题 - 稍微向下移一点以获得更好的重叠效果 */}
+              <div className="absolute top-[20%] md:top-[12%] w-full flex justify-center z-10 pointer-events-none px-4">
+                <h1 className="text-[32vw] md:text-[28vw] leading-[0.75] font-black tracking-tighter text-white uppercase opacity-90">
                   {currentT.hero.title1.replace('*', '')}
                 </h1>
               </div>
               
-              {/* 头像容器 - 去掉了鼠标探照灯特效，仅保留完美浮浮动 */}
-              <div className="absolute bottom-0 left-1/2 w-full max-w-[800px] h-[75vh] md:h-[85vh] z-20 flex items-end justify-center animate-float-center pointer-events-none">
+              {/* 人像图片容器 - 放大图片尺寸，让它遮挡标题 */}
+              {/* 【关键修改】将 bottom-0 改为 bottom-[-30px]，将图片底边藏进屏幕下方，确保浮动时不漏边 */}
+              <div className="absolute bottom-[-30px] left-1/2 w-full max-w-[900px] h-[115vh] md:h-[125vh] z-20 flex items-end justify-center animate-float-center pointer-events-none">
                 <div className="relative h-full w-full flex justify-center items-end">
-                  <img
-                    src="./assets/my-image.png" 
-                    alt="Zhao Mingming"
-                    className="w-auto h-full object-contain object-bottom drop-shadow-2xl" 
-                    referrerPolicy="no-referrer"
-                  />
+                  {/* 对图片本身稍微再做一点放大微调 scale-115，确保藏得更深 */}
+                  <img src="./assets/my-image.png" className="w-auto h-full object-contain object-bottom scale-115 md:scale-110" referrerPolicy="no-referrer" />
                 </div>
               </div>
 
-              {/* 右下角英文标题 */}
+              {/* 右下角英文标题 (VISUAL CREATION ®) */}
               <div className="absolute bottom-[10%] md:bottom-[15%] left-[5%] md:left-[50%] z-30 pointer-events-none flex flex-col items-start max-w-[90%]">
                 <h2 className="text-[20vw] md:text-[14vw] leading-[0.8] font-black tracking-tighter text-brand-red uppercase">
                   {currentT.hero.title2.replace('.', '')}
@@ -378,7 +376,7 @@
                 </h2>
               </div>
               
-              {/* 左下角中文简介 - 按照你的美感要求移动到了下方 */}
+              {/* 左下角中文简介 */}
               <div className="absolute bottom-[8%] md:bottom-[10%] left-[5%] md:left-[8%] z-30 pointer-events-auto max-w-[280px] md:max-w-[350px]">
                 <h3 className="text-xl md:text-2xl font-black leading-tight uppercase tracking-tighter text-brand-red mb-3">
                   {currentT.hero.subtitle}
