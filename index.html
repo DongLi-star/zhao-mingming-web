@@ -150,16 +150,16 @@
         {
           id: 4,
           categoryIdx: 2,
-          image: './assets/model-cover.png',
+          image: './assets/model-cover.jpg',
           images: [
-            './assets/model-1.png',
-            './assets/model-2.png',
-            './assets/model-3.png',
-            './assets/model-4.png',
-            './assets/model-5.png',
-            './assets/model-6.png',
-            './assets/model-7.png',
-            './assets/model-8.png',
+            './assets/model-1.jpg',
+            './assets/model-2.jpg',
+            './assets/model-3.jpg',
+            './assets/model-4.jpg',
+            './assets/model-5.jpg',
+            './assets/model-6.jpg',
+            './assets/model-7.jpg',
+            './assets/model-8.jpg',
           ],
           zh: { title: '数字人虚拟模特生成', role: 'AI技术构建', desc: '搭建工作流，将单次调用成本优化至0.15元，人力与时间成本降低90%以上。' },
           en: { title: 'Digital Human Virtual Model Generation', role: 'AI Tech Lead', desc: 'Built workflow reducing per-call cost to 0.15 RMB, cutting labor and time costs by over 90%.' }
@@ -370,7 +370,7 @@
               </div>
 
               {/* 右下角英文标题 (VISUAL CREATION ®) */}
-              <div className="absolute bottom-[10%] md:bottom-[15%] left-[5%] md:left-[50%] z-30 pointer-events-none flex flex-col items-start max-w-[90%]">
+              <div className="absolute bottom-[3%] md:bottom-[4%] left-[5%] md:left-[50%] z-30 pointer-events-none flex flex-col items-start max-w-[90%]">
                 <h2 className="text-[20vw] md:text-[14vw] leading-[0.8] font-black tracking-tighter text-brand-red uppercase">
                   {currentT.hero.title2.replace('.', '')}
                   <span className="text-2xl md:text-5xl align-top ml-1 md:ml-2">®</span>
@@ -378,7 +378,7 @@
               </div>
               
               {/* 左下角中文简介 */}
-              <div className="absolute bottom-[8%] md:bottom-[10%] left-[5%] md:left-[8%] z-30 pointer-events-auto max-w-[280px] md:max-w-[350px]">
+              <div className="absolute bottom-[3%] md:bottom-[4%] left-[5%] md:left-[8%] z-30 pointer-events-auto max-w-[280px] md:max-w-[350px]">
                 {/* 👇 新增的赵明明大名 */}
                 <div className="text-xl md:text-2xl font-black leading-tight uppercase tracking-tighter text-brand-red mb-1">
                   {lang === 'zh' ? '赵明明' : 'Zhao Mingming'}
@@ -412,21 +412,28 @@
             {/* 核心优势 */}
             <section id="expertise" className="border-b border-black scroll-mt-16">
               <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-black">
-                <div className="group p-8 sm:p-10 md:p-12 lg:p-16 bg-base hover:bg-module transition-all duration-300 hover:-translate-y-1 cursor-default reveal">
+                
+                {/* 01 卡片 */}
+                <div className="group p-8 sm:p-10 md:p-12 lg:p-16 bg-base hover:bg-module transition-all duration-300 transform hover:-translate-y-2 hover:shadow-xl cursor-default reveal">
                   <div className="text-5xl md:text-6xl font-black text-[#D8CFC1] mb-6 md:mb-8 group-hover:text-black transition-colors">01</div>
                   <h3 className="text-xl md:text-2xl font-bold uppercase mb-4 md:mb-6 tracking-tight whitespace-pre-line group-hover:text-brand-red transition-colors">{currentT.expertise.item1Title}</h3>
                   <p className="text-xs sm:text-sm leading-relaxed text-gray-800">{currentT.expertise.item1Desc}</p>
                 </div>
-                <div className="group p-8 sm:p-10 md:p-12 lg:p-16 bg-base hover:bg-module transition-all duration-300 hover:-translate-y-1 cursor-default reveal md:delay-100">
+                
+                {/* 02 卡片 */}
+                <div className="group p-8 sm:p-10 md:p-12 lg:p-16 bg-base hover:bg-module transition-all duration-300 transform hover:-translate-y-2 hover:shadow-xl cursor-default reveal md:delay-100">
                   <div className="text-5xl md:text-6xl font-black text-[#D8CFC1] mb-6 md:mb-8 group-hover:text-black transition-colors">02</div>
                   <h3 className="text-xl md:text-2xl font-bold uppercase mb-4 md:mb-6 tracking-tight whitespace-pre-line group-hover:text-brand-red transition-colors">{currentT.expertise.item2Title}</h3>
                   <p className="text-xs sm:text-sm leading-relaxed text-gray-800">{currentT.expertise.item2Desc}</p>
                 </div>
-                <div className="group p-8 sm:p-10 md:p-12 lg:p-16 bg-base hover:bg-module transition-all duration-300 hover:-translate-y-1 cursor-default reveal md:delay-200">
+                
+                {/* 03 卡片 */}
+                <div className="group p-8 sm:p-10 md:p-12 lg:p-16 bg-base hover:bg-module transition-all duration-300 transform hover:-translate-y-2 hover:shadow-xl cursor-default reveal md:delay-200">
                   <div className="text-5xl md:text-6xl font-black text-[#D8CFC1] mb-6 md:mb-8 group-hover:text-black transition-colors">03</div>
                   <h3 className="text-xl md:text-2xl font-bold uppercase mb-4 md:mb-6 tracking-tight whitespace-pre-line group-hover:text-brand-red transition-colors">{currentT.expertise.item3Title}</h3>
                   <p className="text-xs sm:text-sm leading-relaxed text-gray-800">{currentT.expertise.item3Desc}</p>
                 </div>
+
               </div>
             </section>
 
