@@ -379,6 +379,10 @@
               
               {/* 左下角中文简介 */}
               <div className="absolute bottom-[8%] md:bottom-[10%] left-[5%] md:left-[8%] z-30 pointer-events-auto max-w-[280px] md:max-w-[350px]">
+                {/* 👇 新增的赵明明大名 */}
+                <div className="text-xl md:text-2xl font-black leading-tight uppercase tracking-tighter text-brand-red mb-1">
+                  {lang === 'zh' ? '赵明明' : 'Zhao Mingming'}
+                </div>
                 <h3 className="text-xl md:text-2xl font-black leading-tight uppercase tracking-tighter text-brand-red mb-3">
                   {currentT.hero.subtitle}
                 </h3>
