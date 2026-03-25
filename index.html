@@ -30,21 +30,6 @@
       const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
       const [selectedProject, setSelectedProject] = useState(null);
 
-      const [heroHoverState, setHeroHoverState] = useState({ x: 0, y: 0, isHovered: false });
-
-      const handleHeroMouseMove = (e) => {
-        const rect = e.currentTarget.getBoundingClientRect();
-        setHeroHoverState({
-          x: e.clientX - rect.left,
-          y: e.clientY - rect.top,
-          isHovered: true
-        });
-      };
-
-      const handleHeroMouseLeave = () => {
-        setHeroHoverState(prev => ({ ...prev, isHovered: false }));
-      };
-
       useEffect(() => {
         const observerOptions = {
           root: null,
@@ -80,7 +65,8 @@
             desc: '针对电商数字化转型需求，构建AI视觉内容自动化产出体系。拥有8年影视导演、摄影美学实战经验。',
             author: 'By Zhao Mingming'
           },
-          marquee: ['* 值得追随的绝佳创意™', '* AIGC全链路工作流自动化', '* 商业视觉美学', '* 值得追随的绝佳创意™'],
+          // 已经去掉了TM和重复的文字
+          marquee: ['值得追随的绝佳创意', 'AIGC全链路工作流自动化', '商业视觉美学'],
           work: { title1: 'RECENT', title2: 'WORK', all: '全部' }, 
           expertise: {
             title1: '核心优势',
@@ -102,7 +88,7 @@
             desc: 'Building AI visual content automation systems for e-commerce digital transformation. 8 years of TVC directing experience.',
             author: 'By Zhao Mingming'
           },
-          marquee: ['* IDEAS WORTH RALLYING AROUND™', '* AIGC WORKFLOW AUTOMATION', '* COMMERCIAL VISUAL AESTHETICS', '* IDEAS WORTH RALLYING AROUND™'],
+          marquee: ['IDEAS WORTH RALLYING AROUND', 'AIGC WORKFLOW AUTOMATION', 'COMMERCIAL VISUAL AESTHETICS'],
           work: { title1: 'RECENT', title2: 'WORK', all: 'All' },
           expertise: {
             title1: 'Expertise',
@@ -178,12 +164,56 @@
           zh: { title: '数字人虚拟模特生成', role: 'AI技术构建', desc: '搭建工作流，将单次调用成本优化至0.15元，人力与时间成本降低90%以上。' },
           en: { title: 'Digital Human Virtual Model Generation', role: 'AI Tech Lead', desc: 'Built workflow reducing per-call cost to 0.15 RMB, cutting labor and time costs by over 90%.' }
         },
+         {
+          id: 7,
+          categoryIdx: 4,
+          embedUrl: 'https://player.xinpianchang.com/?aid=12208514&mid=d0Nq7MzyrXvwO2Vj',
+          zh: { title: '河南卫视《爷爷的宝贝》', role: '摄影指导 / 摄影', desc: '袁隆平纪念片，全网人气值31.3w，充满人文关怀与电影质感。' },
+          en: { title: 'Henan TV "Grandpa\'s Treasure"', role: 'Director of Photography', desc: 'Yuan Longping memorial film, 313k popularity score, rich in humanistic care and cinematic texture.' }
+        },
+        {
+          id: 9,
+          categoryIdx: 2,
+          // 单图做封面
+          image: './assets/tapnow-1.jpg',
+          // 点击进去后展示这两张图
+          images: [
+            './assets/tapnow-1.jpg',
+            './assets/tapnow-2.jpg',
+            './assets/comfyui-workflow.png'
+          ],
+          // 这个开关会让它在首页不会变成滑动图库
+          disableSlider: true, 
+          zh: { title: ' TapNow工作流场景', role: 'AI生成专家', desc: '通过TapNow构建产品与数字人快速换装并生成场景的自动化出图流。单图生成时间控制在15秒内。' },
+          en: { title: 'TapNow workflow scenarios', role: 'AI Generation Expert', desc: 'TapNow enables automated image generation workflows for quickly swapping products with digital avatars.' }
+        },
+        {
+          id: 11,
+          categoryIdx: 1, 
+          embedUrl: 'https://player.xinpianchang.com/?aid=13634577&mid=yM1l43VdExpwod2V', 
+          zh: { title: '小黑盒运动开新季', role: '导演', desc: '天猫小黑盒运动开新季商业主题片，把控高规格镜头调度与运动美学呈现。' },
+          en: { title: 'Tmall Hey Box Sports Season', role: 'Director', desc: 'Tmall Hey Box Sports Season commercial feature, controlling high-spec camera blocking and sports aesthetics.' }
+        },
+        {
+          id: 13,
+          categoryIdx: 1, 
+          embedUrl: 'https://player.xinpianchang.com/?aid=13634588&mid=eRPn7q681G9wm39p', 
+          zh: { title: '小黑盒38尖货节', role: '导演', desc: '天猫小黑盒38妇女节营销大片，精准传达品牌女性视觉DNA。' },
+          en: { title: 'Tmall Hey Box March 8th Festival', role: 'Director', desc: 'Tmall Hey Box Women\'s Day commercial, accurately conveying the brand\'s female visual DNA.' }
+        },
         {
           id: 5,
           categoryIdx: 1,
           embedUrl: 'https://player.xinpianchang.com/?aid=12073648&mid=BXl5M7namPbQkKEg',
           zh: { title: '《王者荣耀全国大赛》', role: '导演', desc: '国民级电竞赛事高燃宣传片导演，极具视觉冲击力与网感。' },
           en: { title: 'Honor of Kings National Competition', role: 'Director', desc: 'High-energy promo for national e-sports event, highly visual and internet-savvy.' }
+        },
+        {
+          id: 12,
+          categoryIdx: 1, 
+          embedUrl: 'https://player.xinpianchang.com/?aid=13634617&mid=rVo9wyNgdgL4l5PG', 
+          zh: { title: '小黑盒双旦尖货', role: '导演', desc: '天猫小黑盒双旦节日营销宣传片，营造极具质感的商业节日氛围。' },
+          en: { title: 'Tmall Hey Box Christmas & New Year', role: 'Director', desc: 'Tmall Hey Box holiday promo, creating a highly textured commercial holiday atmosphere.' }
         },
         {
           id: 6,
@@ -193,13 +223,6 @@
           en: { title: 'Tmall Global 2023 Global TOP100 New Product Launch', role: 'DOP', desc: 'The 2023 Tmall Global Annual Top 100 New Products will be released simultaneously at the China International Import Expo.' }
         },
         {
-          id: 7,
-          categoryIdx: 4,
-          embedUrl: 'https://player.xinpianchang.com/?aid=12208514&mid=d0Nq7MzyrXvwO2Vj',
-          zh: { title: '河南卫视《爷爷的宝贝》', role: '摄影指导 / 摄影', desc: '袁隆平纪念片，全网人气值31.3w，充满人文关怀与电影质感。' },
-          en: { title: 'Henan TV "Grandpa\'s Treasure"', role: 'Director of Photography', desc: 'Yuan Longping memorial film, 313k popularity score, rich in humanistic care and cinematic texture.' }
-        },
-        {
           id: 8,
           categoryIdx: 1,
           embedUrl: 'https://player.xinpianchang.com/?aid=11811102&mid=ArVo9wyAdg3wl5PG',
@@ -207,22 +230,12 @@
           en: { title: 'Mengniu Chunzhen x Shen Teng & Ma Li', role: 'Cameraman', desc: 'Top celebrity FMCG TVC, precisely controlling the visual tone of commercial comedy.' }
         },
         {
-          id: 9,
-          categoryIdx: 2,
-          images: [
-            './assets/tapnow-1.jpg',
-            './assets/tapnow-2.jpg'
-          ],
-          zh: { title: ' TapNow工作流场景', role: 'AI生成专家', desc: '通过TapNow构建产品与数字人快速换装并生成场景的自动化出图流。单图生成时间控制在15秒内。' },
-          en: { title: 'TapNow workflow scenarios', role: 'AI Generation Expert', desc: 'TapNow enables automated image generation workflows for quickly swapping products with digital avatars.' }
-        },
-        {
           id: 10,
           categoryIdx: 1, 
           embedUrl: 'https://player.xinpianchang.com/?aid=13632425&mid=bKG8Qd3o1AV4RJMy', 
           zh: { title: '天猫金妆奖活动先导片', role: '导演', desc: '通过创意短片与明星IP联动，为金妆奖活动提前预热。' },
           en: { title: 'Tmall Golden Makeup Awards Teaser', role: 'Director ', desc: 'By collaborating with celebrity IPs through creative short films, the Golden Makeup Awards event was warmed up in advance.' }
-        }
+        },
       ];
 
       const filteredProjects = activeTabIdx === 0 ? projects : projects.filter(p => p.categoryIdx === activeTabIdx);
@@ -271,6 +284,17 @@
             }
             .animate-arrow-bounce {
               animation: slideRight 2s ease-in-out infinite;
+            }
+            
+            /* 完美的无缝跑马灯特效 */
+            @keyframes marquee {
+              0% { transform: translateX(0%); }
+              100% { transform: translateX(-50%); }
+            }
+            .animate-marquee {
+              display: flex;
+              width: max-content;
+              animation: marquee 15s linear infinite;
             }
           `}</style>
 
@@ -333,44 +357,29 @@
                   {currentT.hero.title1.replace('*', '')}
                 </h1>
               </div>
-              <div className="absolute bottom-0 left-1/2 w-full max-w-[800px] h-[75vh] md:h-[85vh] z-20 flex items-end justify-center animate-float-center pointer-events-auto">
-                <div 
-                  className="relative h-full w-full flex justify-center items-end"
-                  onMouseMove={handleHeroMouseMove}
-                  onMouseLeave={handleHeroMouseLeave}
-                  onMouseEnter={handleHeroMouseMove}
-                >
+              
+              {/* 头像容器 - 去掉了鼠标探照灯特效，仅保留完美浮浮动 */}
+              <div className="absolute bottom-0 left-1/2 w-full max-w-[800px] h-[75vh] md:h-[85vh] z-20 flex items-end justify-center animate-float-center pointer-events-none">
+                <div className="relative h-full w-full flex justify-center items-end">
                   <img
                     src="./assets/my-image.png" 
                     alt="Zhao Mingming"
                     className="w-auto h-full object-contain object-bottom drop-shadow-2xl" 
                     referrerPolicy="no-referrer"
                   />
-                  <div 
-                    className="absolute inset-0 flex justify-center items-end transition-opacity duration-300 pointer-events-none"
-                    style={{
-                      opacity: heroHoverState.isHovered ? 1 : 0,
-                      WebkitMaskImage: `radial-gradient(circle 120px at ${heroHoverState.x}px ${heroHoverState.y}px, black 20%, transparent 100%)`,
-                      maskImage: `radial-gradient(circle 120px at ${heroHoverState.x}px ${heroHoverState.y}px, black 20%, transparent 100%)`,
-                    }}
-                  >
-                    <img
-                      src="./assets/my-image.png" 
-                      alt="Zhao Mingming Inverted"
-                      className="w-auto h-full object-contain object-bottom drop-shadow-2xl" 
-                      referrerPolicy="no-referrer"
-                      style={{ filter: 'invert(1)' }}
-                    />
-                  </div>
                 </div>
               </div>
+
+              {/* 右下角英文标题 */}
               <div className="absolute bottom-[10%] md:bottom-[15%] left-[5%] md:left-[50%] z-30 pointer-events-none flex flex-col items-start max-w-[90%]">
                 <h2 className="text-[20vw] md:text-[14vw] leading-[0.8] font-black tracking-tighter text-brand-red uppercase">
                   {currentT.hero.title2.replace('.', '')}
                   <span className="text-2xl md:text-5xl align-top ml-1 md:ml-2">®</span>
                 </h2>
               </div>
-              <div className="absolute top-[55%] md:top-[50%] left-[5%] md:left-[8%] z-30 pointer-events-auto max-w-[280px] md:max-w-[320px]">
+              
+              {/* 左下角中文简介 - 按照你的美感要求移动到了下方 */}
+              <div className="absolute bottom-[8%] md:bottom-[10%] left-[5%] md:left-[8%] z-30 pointer-events-auto max-w-[280px] md:max-w-[350px]">
                 <h3 className="text-xl md:text-2xl font-black leading-tight uppercase tracking-tighter text-brand-red mb-3">
                   {currentT.hero.subtitle}
                 </h3>
@@ -380,32 +389,39 @@
               </div>
             </section>
 
-            {/* 滚动横幅 */}
-            <div className="w-full overflow-hidden border-b border-black bg-module py-3 md:py-4 reveal">
-              <div className="whitespace-nowrap flex space-x-6 md:space-x-8 text-lg sm:text-xl md:text-2xl font-bold uppercase tracking-wider text-black animate-[pulse_4s_ease-in-out_infinite]">
-                 <span>{currentT.marquee[0]}</span>
-                 <span>{currentT.marquee[1]}</span>
-                 <span>{currentT.marquee[2]}</span>
-                 <span>{currentT.marquee[3]}</span>
+            {/* 滚动横幅 - 重写为完美的向左丝滑轮播动效 */}
+            <div className="w-full overflow-hidden border-b border-black bg-module py-3 md:py-4 reveal flex">
+              <div className="animate-marquee text-lg sm:text-xl md:text-2xl font-bold uppercase tracking-wider text-black">
+                {/* 完美轮播需要的两组重复数据 */}
+                <div className="flex gap-8 whitespace-nowrap px-4">
+                  <span>* {currentT.marquee[0]}</span>
+                  <span>* {currentT.marquee[1]}</span>
+                  <span>* {currentT.marquee[2]}</span>
+                </div>
+                <div className="flex gap-8 whitespace-nowrap px-4">
+                  <span>* {currentT.marquee[0]}</span>
+                  <span>* {currentT.marquee[1]}</span>
+                  <span>* {currentT.marquee[2]}</span>
+                </div>
               </div>
             </div>
 
             {/* 核心优势 */}
             <section id="expertise" className="border-b border-black scroll-mt-16">
               <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-black">
-                <div className="p-8 sm:p-10 md:p-12 lg:p-16 bg-base hover:bg-module transition-colors reveal">
-                  <div className="text-5xl md:text-6xl font-black text-[#D8CFC1] mb-6 md:mb-8 group-hover:text-brand-red transition-colors">01</div>
-                  <h3 className="text-xl md:text-2xl font-bold uppercase mb-4 md:mb-6 tracking-tight whitespace-pre-line">{currentT.expertise.item1Title}</h3>
+                <div className="group p-8 sm:p-10 md:p-12 lg:p-16 bg-base hover:bg-module transition-all duration-300 hover:-translate-y-1 cursor-default reveal">
+                  <div className="text-5xl md:text-6xl font-black text-[#D8CFC1] mb-6 md:mb-8 group-hover:text-black transition-colors">01</div>
+                  <h3 className="text-xl md:text-2xl font-bold uppercase mb-4 md:mb-6 tracking-tight whitespace-pre-line group-hover:text-brand-red transition-colors">{currentT.expertise.item1Title}</h3>
                   <p className="text-xs sm:text-sm leading-relaxed text-gray-800">{currentT.expertise.item1Desc}</p>
                 </div>
-                <div className="p-8 sm:p-10 md:p-12 lg:p-16 bg-base hover:bg-module transition-colors reveal md:delay-100">
-                  <div className="text-5xl md:text-6xl font-black text-[#D8CFC1] mb-6 md:mb-8 group-hover:text-brand-red transition-colors">02</div>
-                  <h3 className="text-xl md:text-2xl font-bold uppercase mb-4 md:mb-6 tracking-tight whitespace-pre-line">{currentT.expertise.item2Title}</h3>
+                <div className="group p-8 sm:p-10 md:p-12 lg:p-16 bg-base hover:bg-module transition-all duration-300 hover:-translate-y-1 cursor-default reveal md:delay-100">
+                  <div className="text-5xl md:text-6xl font-black text-[#D8CFC1] mb-6 md:mb-8 group-hover:text-black transition-colors">02</div>
+                  <h3 className="text-xl md:text-2xl font-bold uppercase mb-4 md:mb-6 tracking-tight whitespace-pre-line group-hover:text-brand-red transition-colors">{currentT.expertise.item2Title}</h3>
                   <p className="text-xs sm:text-sm leading-relaxed text-gray-800">{currentT.expertise.item2Desc}</p>
                 </div>
-                <div className="p-8 sm:p-10 md:p-12 lg:p-16 bg-module hover:bg-module-dark transition-colors reveal md:delay-200">
-                  <div className="text-5xl md:text-6xl font-black text-black mb-6 md:mb-8 group-hover:text-brand-red transition-colors">03</div>
-                  <h3 className="text-xl md:text-2xl font-bold uppercase mb-4 md:mb-6 tracking-tight whitespace-pre-line">{currentT.expertise.item3Title}</h3>
+                <div className="group p-8 sm:p-10 md:p-12 lg:p-16 bg-base hover:bg-module transition-all duration-300 hover:-translate-y-1 cursor-default reveal md:delay-200">
+                  <div className="text-5xl md:text-6xl font-black text-[#D8CFC1] mb-6 md:mb-8 group-hover:text-black transition-colors">03</div>
+                  <h3 className="text-xl md:text-2xl font-bold uppercase mb-4 md:mb-6 tracking-tight whitespace-pre-line group-hover:text-brand-red transition-colors">{currentT.expertise.item3Title}</h3>
                   <p className="text-xs sm:text-sm leading-relaxed text-gray-800">{currentT.expertise.item3Desc}</p>
                 </div>
               </div>
@@ -451,12 +467,11 @@
                     <div className="md:col-span-3">
                       <div className="transform transition-transform duration-300 md:group-hover:translate-x-3">
                         <h3 className="text-xl md:text-2xl font-bold uppercase mb-1 md:mb-2">{lang === 'zh' ? '杭州宸帆' : 'Hangzhou Chenfan'}</h3>
-                        <p className="text-xs sm:text-sm uppercase tracking-wide text-gray-500 mb-4 md:mb-6">{lang === 'zh' ? '摄像师' : 'Videographer'}</p>
-                        <p className="text-xs sm:text-sm text-gray-800 leading-relaxed">
-                          {lang === 'zh' 
-                            ? '深耕电商垂直领域，负责服装、美妆、美食类目的穿搭及详情页视频。沉淀极高商业视觉灵敏度。' 
-                            : 'Deeply involved in e-commerce verticals, responsible for fashion, beauty, and food detail page videos. Accumulated high commercial visual sensitivity.'}
-                        </p>
+                        <p className="text-xs sm:text-sm uppercase tracking-wide text-gray-500 mb-4 md:mb-6">{lang === 'zh' ? '摄像师 / 剪辑师' : 'Videographer / Editor'}</p>
+                        <ul className="text-xs sm:text-sm text-gray-800 space-y-2 md:space-y-3 list-disc list-inside marker:text-brand-red leading-relaxed">
+                          <li>{lang === 'zh' ? '深耕电商垂直领域，负责服装、美妆、美食等核心类目的视觉展示与详情页视频制作。' : 'Deeply involved in e-commerce, responsible for fashion, beauty, and food detail page videos.'}</li>
+                          <li>{lang === 'zh' ? '贯穿摄制与后期全链路。在有限的展示时长内，运用流畅的剪辑节奏与精细的调色，最大化呈现产品的美学与情绪价值。' : 'Managed end-to-end production: Utilizing lighting design and camera language to accurately capture material details and elevate the product\'s visual quality.'}</li>
+                        </ul>
                       </div>
                     </div>
                   </div>
@@ -494,7 +509,7 @@
                     <div key={project.id} className={`group cursor-pointer reveal md:delay-${(idx % 2) * 100}`}>
                       <div className="relative w-full aspect-[4/3] overflow-hidden bg-module border border-black mb-4 md:mb-6">
                         
-                        {/* 网格渲染逻辑 */}
+                        {/* 网格渲染逻辑 - 增加了对 disableSlider 的判断 */}
                         {project.embedUrl ? (
                           <iframe 
                             src={project.embedUrl} 
@@ -503,7 +518,7 @@
                             allowFullScreen={true}
                             className="w-full h-full object-cover group-hover:scale-[1.02] transition-all duration-[800ms]"
                           ></iframe>
-                        ) : project.images ? (
+                        ) : project.images && !project.disableSlider ? (
                           <div 
                             className="w-full h-full flex overflow-x-auto overflow-y-hidden snap-x snap-mandatory no-scrollbar scroll-smooth"
                             ref={(el) => {
