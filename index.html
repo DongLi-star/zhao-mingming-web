@@ -352,19 +352,20 @@
 
             {/* 开屏页 */}
             <section className="relative w-full h-[100svh] min-h-[700px] bg-base border-b border-black overflow-hidden flex items-center justify-center pt-16 md:pt-0 reveal">
-              {/* 白色大标题 - 稍微向下移一点以获得更好的重叠效果 */}
+              {/* 大红字标题 - 变回红色，稍微向下移一点以获得更好的重叠效果 */}
               <div className="absolute top-[20%] md:top-[12%] w-full flex justify-center z-10 pointer-events-none px-4">
-                <h1 className="text-[32vw] md:text-[28vw] leading-[0.75] font-black tracking-tighter text-white uppercase opacity-90">
+                {/* MODIFIED: 这里已经把 text-white opacity-90 改回了 text-brand-red */}
+                <h1 className="text-[32vw] md:text-[28vw] leading-[0.75] font-black tracking-tighter text-brand-red uppercase">
                   {currentT.hero.title1.replace('*', '')}
                 </h1>
               </div>
               
-              {/* 人像图片容器 - 放大图片尺寸，让它遮挡标题 */}
-              {/* 【关键修改】将 bottom-0 改为 bottom-[-30px]，将图片底边藏进屏幕下方，确保浮动时不漏边 */}
-              <div className="absolute bottom-[-30px] left-1/2 w-full max-w-[900px] h-[115vh] md:h-[125vh] z-20 flex items-end justify-center animate-float-center pointer-events-none">
+              {/* 人像图片容器 - 缩小尺寸，保持遮挡，不漏边 */}
+              {/* MODIFIED: 将高度从 h-[115vh]/md:h-[125vh] 缩小到 viewport 等高 h-[100svh]。Bottom 依然 -30px 防漏 */}
+              <div className="absolute bottom-[-30px] left-1/2 w-full max-w-[900px] h-[100svh] z-20 flex items-end justify-center animate-float-center pointer-events-none">
                 <div className="relative h-full w-full flex justify-center items-end">
-                  {/* 对图片本身稍微再做一点放大微调 scale-115，确保藏得更深 */}
-                  <img src="./assets/my-image.png" className="w-auto h-full object-contain object-bottom scale-115 md:scale-110" referrerPolicy="no-referrer" />
+                  {/* MODIFIED: 这里缩小了图片放大比例 (从 115 缩小到 105)，确保它变小一点点 */}
+                  <img src="./assets/my-image.png" className="w-auto h-full object-contain object-bottom scale-105 md:scale-100" referrerPolicy="no-referrer" />
                 </div>
               </div>
 
