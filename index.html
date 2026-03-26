@@ -159,10 +159,13 @@
                   <img src="./assets/my-image.png" className="w-auto h-full object-contain object-bottom scale-105 md:scale-100" referrerPolicy="no-referrer" />
                 </div>
               </div>
-              <div className="absolute bottom-[2%] md:bottom-[3%] left-[5%] md:left-[50%] z-30 pointer-events-none flex flex-col items-start max-w-[90%]">
-                <h2 className="text-[20vw] md:text-[14vw] leading-[0.8] font-black tracking-tighter text-brand-red uppercase">{currentT.hero.title2.replace('.', '')}<span className="text-2xl md:text-5xl align-top ml-1 md:ml-2">®</span></h2>
+              {/* 👇 修复图1 (右侧N被裁)：改用 md:right-[2%] 靠右对齐，并适当缩小了字号 (md:text-[10vw]) */}
+              <div className="absolute bottom-[2%] md:bottom-[3%] left-[5%] md:left-auto md:right-[2%] z-30 pointer-events-none flex flex-col items-start md:items-end max-w-[90%]">
+                <h2 className="text-[22vw] md:text-[10vw] xl:text-[11vw] leading-[0.8] font-black tracking-tighter text-brand-red uppercase">{currentT.hero.title2.replace('.', '')}<span className="text-2xl md:text-5xl align-top ml-1 md:ml-2">®</span></h2>
               </div>
-              <div className="absolute bottom-[2%] md:bottom-[3%] left-[5%] md:left-[8%] z-30 pointer-events-auto max-w-[280px] md:max-w-[350px]">
+              
+              {/* 👇 修复图2 (手机端重叠)：把手机端的 bottom 提到了 [15%]，而电脑端保持 [3%] 不变 */}
+              <div className="absolute bottom-[15%] md:bottom-[3%] left-[5%] md:left-[8%] z-30 pointer-events-auto max-w-[280px] md:max-w-[350px]">
                 <div className="text-xl md:text-2xl font-black leading-tight uppercase tracking-tighter text-brand-red mb-1">{lang === 'zh' ? '赵明明' : 'Zhao Mingming'}</div>
                 <h3 className="text-xl md:text-2xl font-black leading-tight uppercase tracking-tighter text-brand-red mb-3">{currentT.hero.subtitle}</h3>
                 <p className="text-xs md:text-sm text-brand-red font-bold leading-relaxed tracking-wide">{currentT.hero.desc}</p>
@@ -197,9 +200,45 @@
               <div className="max-w-[1000px] mx-auto px-4 sm:px-6">
                 <h2 className="text-3xl sm:text-4xl md:text-6xl font-black uppercase tracking-tighter mb-10 md:mb-16 text-center text-brand-red">{currentT.experience.title}</h2>
                 <div className="divide-y divide-black border-t border-black">
-                  {[ { date: '2023.07 - NOW', zhCompany: '淘天设计影像中心', enCompany: 'Taotian Design Center', zhRole: 'AI创作 / 创意导演 (阿里直管)', enRole: 'AI Creator / Director', zhPoints: ['基于ComfyUI集成全链路AI自动化，0.15元/call。', '赋能Lux奢品TVC、金妆奖等S级项目。', '把控服装/美妆材质表现与视觉DNA。'], enPoints: ['AI automation via ComfyUI, 0.15 RMB/call.', 'Delivered S-tier brand assets.', 'Expert in E-com DNA for Luxury/Beauty.'] },
-                     { date: '2018.11 - 2023.03', zhCompany: '新片场传媒', enCompany: 'XinPianChang Media', zhRole: '摄制组负责人 / 导演', enRole: 'Crew Lead / Director', zhPoints: ['Appleclub账号孵化(半年增粉58w+)。', '执导王者荣耀、王者国民级电竞赛事高燃TVC。', '团队全流程管理，从分镜到后期。'], enPoints: ['Incubated Appleclub account (580k+ followers).', 'Directed national TVCs for major games.', 'Managed end-to-end production.'] },
-                     { date: '2017.08 - 2018.10', zhCompany: '杭州宸帆', enCompany: 'Hangzhou Chenfan', zhRole: '摄像师 / 剪辑师', enRole: 'Videographer / Editor', zhPoints: ['电商垂类详情页视觉产出体系构建。', '适应服装高频快节奏拍摄与后期。', '独立把控产品光影、材质还原与叙事逻辑。'], enPoints: ['Built E-com detail page video pipeline.', 'Adapted to high-pace fashion production.', 'Independently managed full-link aesthetics.'] },
+                  {[ 
+                     { 
+                       date: '2023.07 - NOW', 
+                       zhCompany: '淘天设计影像中心', 
+                       enCompany: 'Taotian Design Center', 
+                       zhRole: 'AI创作 / 创意导演 (阿里直管)', 
+                       enRole: 'AI Creator / Director', 
+                       zhPoints: [
+                         '构建全链路AI自动化：基于ComfyUI集成生图与分镜，单次调用仅0.15元。', 
+                         '赋能一线奢品：落地AMIRI、马吉拉、TOD\'S等品牌及天猫AI商用素材。', 
+                         'S级大片导演：执导《麦田守望者》、金妆奖等核心TVC。'
+                       ], 
+                       enPoints: ['Built full-link AI automation via ComfyUI, 0.15 RMB/call.', 'Delivered commercial AI assets for AMIRI, Margiela, TOD\'S, etc.', 'Directed S-tier features like "Catcher in the Rye" and Golden Beauty Awards.'] 
+                     },
+                     { 
+                       date: '2018.11 - 2023.03', 
+                       zhCompany: '新片场传媒', 
+                       enCompany: 'XinPianChang Media', 
+                       zhRole: '摄制组负责人 / 导演', 
+                       enRole: 'Crew Lead / Director', 
+                       zhPoints: [
+                         '头部品牌合作：担任Apple、天猫、花西子、美的等品牌TVC导演。', 
+                         '全流程团队管理：把控从分镜脚本、现场导演到后期剪辑的全链路。', 
+                         '账号孵化操盘：0-1孵化Appleclub半年涨粉58w+；阿吉豆涨粉40w+。'
+                       ], 
+                       enPoints: ['Top Brand Collabs: TVC Director for Apple, Tmall, Florasis, Midea, etc.', 'Managed end-to-end production from scripts to post-editing.', 'Incubated Appleclub (580k+ followers) and Ajidou (400k+).'] 
+                     },
+                     { 
+                       date: '2017.08 - 2018.10', 
+                       zhCompany: '杭州宸帆', 
+                       enCompany: 'Hangzhou Chenfan', 
+                       zhRole: '摄像师 / 剪辑师', 
+                       enRole: 'Videographer / Editor', 
+                       zhPoints: [
+                         '深耕电商垂直领域，负责服装、美妆、美食等核心类目的视觉展示与详情页视频制作。', 
+                         '贯穿摄制与后期全链路。在有限的展示时长内，运用流畅的剪辑节奏与精细的调色，最大化呈现产品的美学与情绪价值。'
+                       ], 
+                       enPoints: ['Deeply involved in e-commerce, responsible for fashion, beauty, and food videos.', 'Managed end-to-end production to maximize aesthetic and emotional value through precise editing and coloring.'] 
+                     },
                   ].map((exp, idx) => (
                     <div key={idx} className="py-8 md:py-10 grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-6 group transition-colors -mx-4 sm:-mx-6 px-4 sm:px-6 cursor-default">
                       <div className="text-xs sm:text-sm font-bold tracking-wider pt-1 md:group-hover:text-brand-red transition-colors">{exp.date}</div>
