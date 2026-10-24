@@ -309,6 +309,72 @@ const projects = {
   }
 };
 Object.assign(projects, {
+  "productFeatured": {
+    "title": "AI 产品视频",
+    "category": "AI MOTION / PRODUCT FILMS",
+    "description": "数码耳机、护肤、饮料与运动产品的生成式影像创作。",
+    "externalPlayer": true,
+    "films": [
+      [
+        "AI产品广告—数码耳机",
+        "13777724",
+        "qd9g4rDmDOr7v86Z"
+      ],
+      [
+        "AI产品广告—护肤精油",
+        "13777685",
+        "n2k9QAVaVzr718MZ"
+      ],
+      [
+        "AI产品广告—面霜护肤",
+        "13777671",
+        "DaLZwPqBqVD4nrjY"
+      ],
+      [
+        "AI产品广告—饮品饮料",
+        "13777668",
+        "Mnp8wWk6kelwK0lG"
+      ],
+      [
+        "AI产品广告—运动鞋",
+        "13777664",
+        "KdRx7bZoZ8R7b2N3"
+      ]
+    ]
+  },
+  "sceneFeatured": {
+    "title": "AI 人物场景视频",
+    "category": "AI PEOPLE & SCENES",
+    "description": "人物、家居、茶饮与奢品场景中的生成式影像叙事。",
+    "externalPlayer": true,
+    "films": [
+      [
+        "AI产品广告—家居沙发",
+        "13777733",
+        "xv5Ywj5A5lO760PX"
+      ],
+      [
+        "AI广告—潮流耳机",
+        "13777719",
+        "DA96QevkvPP7j5N0"
+      ],
+      [
+        "新中式茶饮—AI广告片",
+        "13777686",
+        "v9GZQRomoAo7WnAR"
+      ],
+      [
+        "AI品牌广告",
+        "13777619",
+        "qd9g4rDmDeN7v86Z"
+      ],
+      [
+        "AI创意短片—奢品手表",
+        "13777546",
+        "GKL87No2oPdwojJz"
+      ]
+    ]
+  },
   "productFilms": {
     "title": "商品的另一种叙事",
     "category": "AI MOTION / PRODUCT STUDIES",
@@ -468,8 +534,8 @@ function setFilm(project, index) {
   $$('.film-controls button', dialogBody).forEach((button, i) => button.setAttribute('aria-pressed', String(i === index)));
   $('.media-caption', dialogBody).textContent = film[0];
   const link = $('.external-film', dialogBody);
-  link.href = `https://www.xinpianchang.com/a${film[1]}`;
-  link.textContent = '在新片场打开此作品 ↗';
+  link.href = project.externalPlayer ? iframe.src : `https://www.xinpianchang.com/a${film[1]}`;
+  link.textContent = project.externalPlayer ? '在新片场播放器中打开 ↗' : '在新片场打开此作品 ↗';
 }
 function openProject(key, trigger, initialIndex = 0) {
   const project = projects[key];
