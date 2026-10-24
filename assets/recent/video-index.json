@@ -1,0 +1,127 @@
+[
+  {
+    "duration": 10.078666666666667,
+    "fps": 24,
+    "height": 720,
+    "name": "优时颜洗面泡",
+    "prefix": "video-01",
+    "width": 720
+  },
+  {
+    "duration": 10.078666666666667,
+    "fps": 24,
+    "height": 720,
+    "name": "兰蔻眼霜",
+    "prefix": "video-02",
+    "width": 720
+  },
+  {
+    "duration": 10.078666666666667,
+    "fps": 24,
+    "height": 720,
+    "name": "可复美修复贴-2",
+    "prefix": "video-03",
+    "width": 720
+  },
+  {
+    "duration": 10,
+    "fps": 25,
+    "height": 1080,
+    "name": "唇釉+尾板",
+    "prefix": "video-04",
+    "width": 720,
+    "sourceWidth": 1080,
+    "sourceHeight": 1080,
+    "webOptimized": true
+  },
+  {
+    "duration": 10.078666666666667,
+    "fps": 24,
+    "height": 720,
+    "name": "巴黎欧莱雅润发精油",
+    "prefix": "video-05",
+    "width": 720
+  },
+  {
+    "duration": 10.078666666666667,
+    "fps": 24,
+    "height": 720,
+    "name": "护舒宝卫生巾",
+    "prefix": "video-06",
+    "width": 720
+  },
+  {
+    "duration": 10,
+    "fps": 25,
+    "height": 1080,
+    "name": "杜蕾斯(1)",
+    "prefix": "video-07",
+    "width": 720,
+    "sourceWidth": 1080,
+    "sourceHeight": 1080,
+    "webOptimized": true
+  },
+  {
+    "duration": 8.078548752834466,
+    "fps": 24,
+    "height": 720,
+    "name": "洗衣凝珠",
+    "prefix": "video-08",
+    "width": 720
+  },
+  {
+    "duration": 9.16,
+    "fps": 25,
+    "height": 1080,
+    "name": "漱口水",
+    "prefix": "video-09",
+    "width": 720,
+    "sourceWidth": 1080,
+    "sourceHeight": 1080,
+    "webOptimized": true
+  },
+  {
+    "duration": 10.24,
+    "fps": 25,
+    "height": 1080,
+    "name": "舒肤佳香皂",
+    "prefix": "video-10",
+    "width": 720,
+    "sourceWidth": 1080,
+    "sourceHeight": 1080,
+    "webOptimized": true
+  },
+  {
+    "duration": 11.52,
+    "fps": 25,
+    "height": 1080,
+    "name": "苏菲安睡裤",
+    "prefix": "video-11",
+    "width": 720,
+    "sourceWidth": 1080,
+    "sourceHeight": 1080,
+    "webOptimized": true
+  },
+  {
+    "duration": 9.76,
+    "fps": 25,
+    "height": 1080,
+    "name": "鱼子面膜",
+    "prefix": "video-12",
+    "width": 720,
+    "sourceWidth": 1080,
+    "sourceHeight": 1080,
+    "webOptimized": true
+  },
+  {
+    "duration": 15.042,
+    "fps": 24,
+    "height": 1396,
+    "name": "直播动态测试",
+    "prefix": "video-13",
+    "width": 644,
+    "sourceWidth": 644,
+    "sourceHeight": 1396,
+    "webOptimized": true
+  }
+]
