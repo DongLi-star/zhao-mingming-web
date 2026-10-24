@@ -1,0 +1,32 @@
+#motion-world{--sw-bg:#101010;--sw-ink:#e9e7df;--sw-ink-soft:#93928e;--sw-accent:#baa5e8;position:relative;isolation:isolate;border-bottom:1px solid #333330}
+#motion-world .sw-pin{height:100vh;height:100svh;position:sticky;top:0;overflow:hidden;isolation:isolate;background:#101010}
+#motion-world .sw-sky,#motion-world .sw-stage,#motion-world .sw-scrollbar{position:absolute}
+#motion-world .sw-topbar,#motion-world .sw-copylayer,#motion-world .sw-route,#motion-world .sw-hint,#motion-world .sw-particles{display:none}
+#motion-world .sw-stage{inset:0}
+#motion-world .sw-scene__video,#motion-world .sw-scene__still{width:min(66vh,660px);height:min(66vh,660px);left:57%;top:48%;transform:translate(-50%,-50%)!important;object-fit:contain;object-position:center;background:#101010}
+#motion-world .sw-scrollbar{top:auto;bottom:82px;left:var(--pad);right:var(--pad);height:1px;z-index:31;background:#353132}
+.reel-overlay{position:absolute;inset:0;z-index:30;pointer-events:none}
+.reel-top{position:absolute;top:40px;left:var(--pad);right:var(--pad);display:flex;justify-content:space-between;align-items:center}
+.reel-top>.eyebrow{font-size:8px}.reel-top>a{pointer-events:auto;font-size:10px;color:#b3ada5;padding:10px 0}
+.reel-title{position:absolute;left:var(--pad);top:34%;width:26%}.reel-title>.mono{font-size:8px;color:#969087}.reel-title h2{font-size:clamp(40px,5vw,82px);font-weight:400;letter-spacing:-.06em;line-height:.88;margin-top:20px}.reel-title h2>span{color:#baa5e8}.reel-title p{font-size:12px;margin-top:25px;color:#a19b93;letter-spacing:.12em}
+.reel-caption{position:absolute;left:57%;top:calc(48% + min(33vh,330px) + 16px);transform:translateX(-50%);text-align:center;width:400px}.reel-caption>.mono{font-size:8px;color:#858079}.reel-caption p{font-size:11px;margin-top:6px}.reel-counter{display:block;margin-top:9px;color:#baa5e8!important}
+.reel-footer{position:absolute;left:var(--pad);right:var(--pad);bottom:34px;display:flex;justify-content:space-between;align-items:center;gap:20px}.reel-footer>button{pointer-events:auto;background:none;font-size:9px;padding:8px 0;color:#a9a199}.reel-footer>button:hover{color:#baa5e8}.reel-instruction{font-size:8px;color:#807a72}
+@media(max-width:1100px){.reel-title{width:27%}.reel-title h2{font-size:4.9vw}.reel-title p{font-size:10px}#motion-world .sw-scene__video,#motion-world .sw-scene__still{width:min(61vh,55vw);height:min(61vh,55vw);left:61%}.reel-caption{left:61%;top:calc(48% + min(30.5vh,27.5vw) + 16px)}}
+@media(max-width:760px){.reel-top{top:24px}.reel-top>.eyebrow{font-size:6px}.reel-top>a{font-size:9px}.reel-title{top:13%;left:24px;width:calc(100% - 48px)}.reel-title>.mono{font-size:6px}.reel-title h2{font-size:32px;line-height:.91;margin-top:12px}.reel-title p{font-size:9px;margin-top:14px;position:absolute;left:170px;top:30px}.reel-title h2>span{display:inline}.reel-title h2 br:nth-child(2){display:none}#motion-world .sw-scene__video,#motion-world .sw-scene__still{width:min(82vw,44svh);height:min(82vw,44svh);left:50%;top:52%}.reel-caption{left:50%;top:calc(52% + min(41vw,22svh) + 15px);width:90%}.reel-caption>.mono{font-size:6px}.reel-caption p{font-size:10px;margin-top:4px}.reel-counter{margin-top:6px!important}#motion-world .sw-scrollbar{bottom:94px}.reel-footer{bottom:25px;gap:10px;align-items:flex-end;flex-wrap:wrap}.reel-footer>button{font-size:9px}.reel-instruction{position:absolute;font-size:6px;bottom:38px;left:0;right:0;text-align:center}.reel-footer .reel-watch{margin-left:auto}}
+@media(max-height:600px) and (min-width:761px){#motion-world .sw-scrollbar{bottom:56px}.reel-top{top:14px}.reel-footer{bottom:14px}.reel-caption{display:none}.reel-title{top:29%}.reel-title h2{font-size:45px}.reel-title p{font-size:9px;margin-top:15px}}
+@media(prefers-reduced-motion:reduce){.reel-section .sw-scene{will-change:auto}}
+@media(max-width:760px){.reel-title h2>span{margin-left:.1em}}
+
+/* AI video production is the primary message of the scroll film. */
+.reel-title .reel-ai-heading{font-size:clamp(44px,5.1vw,86px);line-height:1.08;letter-spacing:-.055em}.reel-title .reel-ai-heading>span{white-space:nowrap}.reel-title:has(.reel-ai-heading) p{line-height:1.9;letter-spacing:.06em;margin-top:24px}
+@media(max-width:1100px) and (min-width:761px){.reel-title .reel-ai-heading{font-size:4.9vw}}
+@media(max-width:760px){.reel-title .reel-ai-heading{font-size:38px;line-height:1.05;margin-top:12px}.reel-title .reel-ai-heading>span{margin-left:0}.reel-title:has(.reel-ai-heading) p{position:static;margin-top:12px;font-size:9px;line-height:1.7}.reel-title:has(.reel-ai-heading){top:12%}}
+@media(max-width:760px) and (max-height:740px){.reel-title:has(.reel-ai-heading){top:11%}.reel-title .reel-ai-heading{font-size:30px;line-height:1.06;margin-top:8px}.reel-title:has(.reel-ai-heading) p{font-size:8px;line-height:1.7;margin-top:8px}}
+@media(max-width:760px){.pw-work .reel-title .reel-ai-heading{margin-top:12px}.pw-work .reel-title:has(.reel-ai-heading) p{margin-top:12px}.pw-work .reel-footer .reel-watch{margin-right:0}.pw-work .reel-footer{bottom:70px;flex-wrap:nowrap}.pw-work .reel-instruction{bottom:-26px}}
+@media(max-width:760px) and (max-height:740px){.pw-work .reel-title:has(.reel-ai-heading){top:9%}.pw-work .reel-title .reel-ai-heading{margin-top:8px}.pw-work .reel-title:has(.reel-ai-heading) p{margin-top:8px}}
+@media(max-width:760px) and (max-height:740px){#motion-world .sw-scene__video,#motion-world .sw-scene__still{width:min(82vw,40svh);height:min(82vw,40svh)}.pw-work .reel-caption{top:calc(52% + min(41vw,20svh) + 15px)}}
+
+/* One AI video chapter: a featured scroll film followed by the series. */
+#ai-videos>.pw-scroll-study{margin-top:0}.pw-video-series-heading{margin-top:30px}.pw-video-series-heading h4{font-size:clamp(24px,2.3vw,34px);font-weight:400;letter-spacing:-.04em;line-height:1.2;margin-top:12px}.reel-footer>.reel-watch{pointer-events:auto;font-size:9px;color:#a9a199;padding:8px 0;white-space:nowrap}.reel-footer>.reel-watch:hover{color:#baa5e8}.reel-footer>.reel-watch:focus-visible{outline:1px solid #baa5e8;outline-offset:5px}
+@media(max-width:760px){.pw-video-series-heading{margin-top:20px}.pw-video-series-heading h4{font-size:25px}.pw-work .reel-footer>.reel-watch{margin-right:0}}
+@media(max-width:760px){.pw-work .reel-footer{bottom:82px}.pw-work .reel-footer>button{font-size:9px}}

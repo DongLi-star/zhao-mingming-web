@@ -1,0 +1,18 @@
+/* Approved award treatment for The Wheat Field Watcher. */
+#pw-film-01 .pw-award-badge { position:absolute;top:12px;right:12px;display:inline-flex;align-items:center;gap:7px;padding:6px 9px 6px 7px;border:1px solid #c9a17a5c;border-radius:3px;background:linear-gradient(130deg,#261e17eb,#141211eb);box-shadow:0 3px 14px #0003;color:#d7b18d;pointer-events:none; }
+#pw-film-01 .pw-award-badge>span { font:8px/1 var(--pw-mono);letter-spacing:.16em;padding-top:1px; }
+#pw-film-01 .pw-award-badge svg { display:block;width:22px;height:22px;overflow:visible; }
+#pw-film-01 .pw-laurel-stem { stroke:currentColor;stroke-width:1;stroke-linecap:round; }
+#pw-film-01 .pw-laurel-leaf { fill:currentColor;fill-opacity:.64; }
+#pw-film-01 .pw-award-trophy { stroke:currentColor;stroke-width:1.25;stroke-linejoin:round;stroke-linecap:round; }
+#pw-film-01 .pw-film-caption>span { display:grid;grid-template-columns:max-content minmax(0,1fr) 17px;gap:15px; }
+#pw-film-01 .pw-film-role { max-width:none;white-space:nowrap; }
+#pw-film-01 .pw-film-award-text { margin:0;min-width:0;color:#c9a17a;font-size:11px;font-weight:400;line-height:1.7;letter-spacing:.035em; }
+@media(max-width:760px) {
+  #pw-film-01 .pw-award-badge { top:7px;right:7px;gap:4px;padding:4px 6px 4px 4px; }
+  #pw-film-01 .pw-award-badge svg { width:16px;height:16px; }
+  #pw-film-01 .pw-award-badge>span { font-size:6px;letter-spacing:.12em; }
+  #pw-film-01 .pw-film-caption>span { grid-template-columns:max-content minmax(0,1fr) 14px;gap:7px; }
+  #pw-film-01 .pw-film-award-text { font-size:8px;line-height:1.8;letter-spacing:0; }
+}
+@media(max-width:360px) { #pw-film-01 .pw-film-award-text { font-size:7.5px; } }

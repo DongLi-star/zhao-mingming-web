@@ -1,0 +1,72 @@
+/* V10 content structure, expressed in the existing felt site's palette and shapes. */
+.pw-subchapter-heading h4,.pw-portrait-heading h4,.pw-skate-heading h4,.pw-video-series-heading h4{font-weight:550;line-height:1.4}
+.pw-subchapter-heading{border-top:1px dashed var(--pw-line);padding-top:25px}
+.pw-portrait-board{background:#eee3cf;color:var(--ink);border:1px dashed #ceb89b;border-radius:20px}
+.pp-stage-label>span,.pp-stage-label p,.pw-portrait-board figcaption,.pp-generation-steps p,.pp-board-footer p{color:#7b6957}
+.pp-stage-label h5{font-weight:550;color:#5c4230}
+.pp-generation-steps>div{background:#fff6e8;border:1px solid #dcc8ab;border-radius:12px}
+.pp-generation-steps span{color:#a0714c}
+.pp-generation-steps:before,.pp-generation-steps:after{color:#bd8459}
+.pw-portrait-board figure img{border-radius:8px}
+.pp-board-footer{border-top:1px dashed #cfb89a}
+.pp-board-footer p span{color:#b57a50}
+.pp-board-footer button,.pp-board-footer button span{color:#9e4827}
+.pp-board-footer button:hover{color:#673a23}
+.portrait-detail-grid figcaption{color:#7c6957}
+.portrait-detail-grid img{border-radius:8px}
+.portrait-library-jump{border-color:#b89070;color:#a24728}
+.pw-live-chapter .pw-project-copy h3{font-weight:600;line-height:1.4}
+.pw-live-chapter>.pw-project-summary{padding:32px;gap:28px}
+.pw-live-chapter>.pw-subchapter-heading{border-top-style:dashed}
+.pw-live-talk{background:#f0e6d6;border:1px dashed #cebaa0;border-radius:18px}
+.pw-live-talk-copy h4{font-weight:550}
+.pw-live-talk-copy .pw-live-talk-meta{color:#826e5b!important}
+.pw-live-player video{border-radius:14px}
+.pw-live-player>a{color:#a24728;border-color:#b89070}
+.pw-work .pw-live-clips button{border-color:#bb997c;color:#76533a;border-radius:24px}
+.pw-work .pw-live-clips button[aria-pressed="true"]{color:#fff1de;background:#b64c28;border-color:#b64c28}
+.pw-skate-preview{background:#eee3cf;border:1px dashed #cebaa0;border-radius:16px}
+.pw-skate-preview>span{background:#e7d7be;color:#745a43}
+.pw-skate-preview>img{background:#f1f5f8}
+.pw-video-category-nav{border-bottom-style:dashed}
+.pw-video-category-nav a{border-radius:28px;border:1px solid #d4bda0;padding:10px 16px;background:#fff5e6}
+.pw-video-subsection+.pw-video-subsection>.pw-video-series-heading{border-top-style:dashed}
+.pw-film-caption>span .pw-film-role{color:#a24728;background:#eedbc3;border-color:#cda98466;border-radius:7px}
+#pw-film-01 .pw-film-award-text{color:#99582b}
+#pw-film-01 .pw-award-badge{border-radius:8px}
+.reel-footer>.reel-watch:hover{color:#efc382}
+.reel-footer>.reel-watch:focus-visible{outline-color:#efc382}
+@media(max-width:760px){
+ .pw-character-chapter .pw-chapter-heading h3{font-size:30px}
+ .pw-character-chapter .pw-chapter-heading h3>span{font:8px var(--mono);margin:10px 0 0}
+ .pw-live-chapter>.pw-project-summary{padding:21px;gap:22px}
+ .pw-live-chapter .pw-project-copy h3{font-size:29px}
+ .pw-portrait-board{border-radius:14px}
+ .pw-live-talk{padding:24px 20px;border-radius:14px}
+ .pw-video-category-nav{gap:10px}
+ .pw-video-category-nav a{font-size:10px;padding:10px 12px;gap:12px}
+ .pw-film-caption>strong{font-size:11px}
+ .reel-title .reel-ai-heading{font-size:36px}
+ .reel-title:has(.reel-ai-heading){top:14%}
+ .reel-title:has(.reel-ai-heading) p{position:static;line-height:1.7;margin-top:10px}
+ .pw-work .reel-footer{bottom:82px}
+ .pw-work .reel-instruction{bottom:-26px}
+}
+@media(max-width:760px) and (max-height:740px){
+ .reel-title:has(.reel-ai-heading){top:16%;padding:10px 12px;width:calc(100% - 48px)}
+ .reel-title .reel-ai-heading{font-size:28px}
+ .reel-title .reel-ai-heading br{display:none}
+ .reel-title .reel-ai-heading span{margin-left:9px}
+ .reel-title:has(.reel-ai-heading) p{font-size:8px;margin-top:8px}
+}
+/* Keep V10's two-row film viewport short enough for wheel browsing. */
+@media(min-width:761px){.pw-film-track{max-width:min(100%,calc((100svh - 210px)*1.77778 + var(--pw-gap)))}}
+@media(min-width:761px){.reel-title .reel-ai-heading{font-size:clamp(34px,4vw,62px)}}
+
+/* Center the three AI generalization cards within the portrait content row. */
+@media(min-width:761px){
+ .pp-generation{display:flex;flex-direction:column}
+ .pp-generation>.pp-stage-label{flex-shrink:0}
+ .pp-generation-steps{flex:1;align-content:center;padding-top:0}
+ .pp-generation-steps:before,.pp-generation-steps:after{transform:translateY(-50%)}
+}

@@ -1,0 +1,17 @@
+/* One felt star, projected through the page's empty spaces. */
+.felt-thread{position:fixed;inset:0;width:100%;height:100%;z-index:3;pointer-events:none!important;overflow:hidden;contain:strict;isolation:isolate;opacity:0;color:#b98332}
+.felt-thread.is-ready:not(.is-disabled){opacity:1}
+.felt-thread svg{display:block;width:100%;height:100%;overflow:visible;pointer-events:none!important}
+.felt-thread-route{fill:none;stroke:currentColor;stroke-width:.9;stroke-dasharray:1 10;opacity:.1;stroke-linecap:round}
+[data-thread-yarn] path{fill:none;stroke-linecap:round;stroke-linejoin:round}
+.felt-thread-tail{stroke:currentColor;opacity:.78}
+.felt-yarn-soft{stroke:currentColor;stroke-width:4.6;opacity:.07}
+.felt-yarn-light{stroke:#ffedbf;stroke-width:.45;opacity:.62}
+.felt-yarn-dark{stroke:#92632b;stroke-width:.4;opacity:.32}
+.felt-yarn-fuzz{stroke:currentColor;stroke-width:.32;opacity:.34}
+.felt-thread.is-dark{color:#f0ce8f}
+body.has-felt-thread.is-motion-active .intro-mark{visibility:hidden}
+body.dialog-open .felt-thread{visibility:hidden}
+@media(max-width:760px){.felt-thread-route{opacity:.07}.felt-yarn-soft{stroke-width:3.4}.felt-yarn-light,.felt-yarn-dark{stroke-width:.3}}
+@media(prefers-reduced-motion:reduce){.felt-thread{display:none!important}body.has-felt-thread .intro-mark{visibility:visible}}
+@media print{.felt-thread{display:none!important}}
