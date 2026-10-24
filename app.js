@@ -382,73 +382,73 @@ Object.assign(projects, {
     "videos": [
       {
         "title": "优时颜洗面泡",
-        "src": "recent/video-01.mp4",
+        "embed": "https://player.xinpianchang.com/?aid=13853520&mid=xv5YwjMd13O760PX",
         "poster": "recent/video-01-1.jpg",
         "duration": 10.1
       },
       {
         "title": "兰蔻眼霜",
-        "src": "recent/video-02.mp4",
+        "embed": "https://player.xinpianchang.com/?aid=13853523&mid=GKL87N0aqg04ojJz",
         "poster": "recent/video-02-1.jpg",
         "duration": 10.1
       },
       {
         "title": "可复美修复贴",
-        "src": "recent/video-03.mp4",
+        "embed": "https://player.xinpianchang.com/?aid=13853524&mid=MzkmwJD9MgGQxjXp",
         "poster": "recent/video-03-1.jpg",
         "duration": 10.1
       },
       {
         "title": "唇釉",
-        "src": "recent/video-04.mp4",
+        "embed": "https://player.xinpianchang.com/?aid=13853525&mid=GmOEQGn9Blb418bn",
         "poster": "recent/video-04-1.jpg",
         "duration": 10
       },
       {
         "title": "巴黎欧莱雅润发精油",
-        "src": "recent/video-05.mp4",
+        "embed": "https://player.xinpianchang.com/?aid=13853526&mid=DGPB72vRElg7drm5",
         "poster": "recent/video-05-1.jpg",
         "duration": 10.1
       },
       {
         "title": "护舒宝卫生巾",
-        "src": "recent/video-06.mp4",
+        "embed": "https://player.xinpianchang.com/?aid=13853527&mid=0lYnQm3Vr8Gw62j1",
         "poster": "recent/video-06-1.jpg",
         "duration": 10.1
       },
       {
         "title": "杜蕾斯",
-        "src": "recent/video-07.mp4",
+        "embed": "https://player.xinpianchang.com/?aid=13853528&mid=POpZQXvDEd1wEr5a",
         "poster": "recent/video-07-1.jpg",
         "duration": 10
       },
       {
         "title": "洗衣凝珠",
-        "src": "recent/video-08.mp4",
+        "embed": "https://player.xinpianchang.com/?aid=13853529&mid=jlyzw0qZAYk4B198",
         "poster": "recent/video-08-1.jpg",
         "duration": 8.1
       },
       {
         "title": "漱口水",
-        "src": "recent/video-09.mp4",
+        "embed": "https://player.xinpianchang.com/?aid=13853530&mid=yoRe78Kq6AGQr1Dj",
         "poster": "recent/video-09-1.jpg",
         "duration": 9.2
       },
       {
         "title": "舒肤佳香皂",
-        "src": "recent/video-10.mp4",
+        "embed": "https://player.xinpianchang.com/?aid=13853531&mid=rVo9wy2nda64l5PG",
         "poster": "recent/video-10-1.jpg",
         "duration": 10.2
       },
       {
         "title": "苏菲安睡裤",
-        "src": "recent/video-11.mp4",
+        "embed": "https://player.xinpianchang.com/?aid=13853532&mid=bKG8QdRn0OdwRJMy",
         "poster": "recent/video-11-1.jpg",
         "duration": 11.5
       },
       {
         "title": "鱼子面膜",
-        "src": "recent/video-12.mp4",
+        "embed": "https://player.xinpianchang.com/?aid=13853533&mid=d0Nq7M1KOnG7O2Vj",
         "poster": "recent/video-12-1.jpg",
         "duration": 9.8
       }
@@ -510,7 +510,7 @@ Object.assign(projects, {
     "videos": [
       {
         "title": "直播间人物口播 · 示例 01",
-        "src": "recent/video-13.mp4",
+        "embed": "https://player.xinpianchang.com/?aid=13853534&mid=8pvbQYpR9mk4306X",
         "poster": "recent/video-13-1.jpg",
         "duration": 15.0
       }
@@ -540,7 +540,7 @@ function setFilm(project, index) {
 function openProject(key, trigger, initialIndex = 0) {
   const project = projects[key];
   if (!project) return;
-  document.querySelector('[data-live-video]')?.pause();
+  stopInlineLiveEmbed();
   lastTrigger = trigger;
   $('#dialog-title').textContent = project.title;
   $('#dialog-category').textContent = project.category;
@@ -571,17 +571,18 @@ function openProject(key, trigger, initialIndex = 0) {
     });
     jump.addEventListener('click', () => { resultsHeading.scrollIntoView({block: 'start', behavior: 'auto'}); resultsHeading.focus({preventScroll: true}); });
   } else if (project.videos) {
-    const native = document.createElement('video'); native.className = `native-video${project.processImage ? ' portrait-video' : ''}`; native.controls = true; native.playsInline = true; native.preload = 'auto'; native.setAttribute('aria-label',project.title);
+    const player = document.createElement('iframe'); player.className = `native-video${project.processImage ? ' portrait-video' : ''}`; player.allow = 'fullscreen; picture-in-picture'; player.allowFullscreen = true; player.referrerPolicy = 'strict-origin-when-cross-origin';
     const caption = document.createElement('p'); caption.className = 'media-caption';
     const controls = document.createElement('div'); controls.className = 'film-controls'; controls.setAttribute('role','group'); controls.setAttribute('aria-label','选择短片');
-    function chooseVideo(index, startPlayback = true) {
-      native.pause(); native.src = `assets/${project.videos[index].src}`; native.poster = `assets/${project.videos[index].poster}`; native.load();
-      caption.textContent = `${project.videos[index].title} / ${project.videos[index].duration} 秒 / 创作测试`;
-      [...controls.children].forEach((b,i)=>b.setAttribute('aria-pressed',String(i===index)));
-      if (startPlayback) native.play().catch(() => {});
+    const link = document.createElement('a'); link.className = 'external-film'; link.target = '_blank'; link.rel = 'noopener noreferrer'; link.textContent = '在新片场播放器中打开 ↗';
+    function chooseVideo(index) {
+      const clip = project.videos[index]; player.src = clip.embed; player.title = clip.title;
+      caption.textContent = `${clip.title} / ${clip.duration} 秒 / 创作测试`;
+      link.href = clip.embed;
+      [...controls.children].forEach((button,i)=>button.setAttribute('aria-pressed',String(i===index)));
     }
     project.videos.forEach((item,index)=>{const button=document.createElement('button');button.textContent=item.title;button.addEventListener('click',()=>chooseVideo(index));controls.append(button);});
-    dialogBody.append(native,caption,controls); chooseVideo(Math.max(0, Math.min(project.videos.length - 1, initialIndex)), trigger?.hasAttribute('data-media-index') ?? false);
+    dialogBody.append(player,caption,controls,link); chooseVideo(Math.max(0, Math.min(project.videos.length - 1, initialIndex)));
   } else if (project.groups) {
     project.groups.forEach(group=>{
       const heading=document.createElement('h3');heading.className='gallery-group-title';heading.textContent=group.title;
@@ -629,37 +630,15 @@ dialog.addEventListener('close', () => {
   document.body.classList.remove('dialog-open');
   $$('video',dialogBody).forEach(video=>{video.pause();video.removeAttribute('src');video.load();});
   dialogBody.replaceChildren();
+  restoreInlineLiveEmbed();
   lastTrigger?.focus({preventScroll:true});
 });
 
-// Keep the inline livestream player and modal player from speaking together.
-const inlineLiveVideo = document.querySelector('[data-live-video]');
-if (inlineLiveVideo) {
-  document.addEventListener('play', event => {
-    if (event.target === inlineLiveVideo) $$('#dialog-body video').forEach(video => video.pause());
-    else if (event.target instanceof HTMLVideoElement && dialog.contains(event.target)) inlineLiveVideo.pause();
-  }, true);
-  addEventListener('pagehide', () => inlineLiveVideo.pause());
+// Unload the inline embed while a modal is open so two players cannot speak together.
+const inlineLiveFrame = document.querySelector('[data-live-embed]');
+function stopInlineLiveEmbed() { inlineLiveFrame?.removeAttribute('src'); }
+function restoreInlineLiveEmbed() {
+  if (inlineLiveFrame && !dialog.open && !inlineLiveFrame.hasAttribute('src')) inlineLiveFrame.src = inlineLiveFrame.dataset.liveEmbed;
 }
-
-// Add future livestream clips to projects.liveProject.videos; both viewers share it.
-if (inlineLiveVideo) {
-  const clips = projects.liveProject.videos;
-  const clipControls = document.querySelector('[data-live-clips]');
-  if (clips.length > 1 && clipControls) {
-    clipControls.hidden = false;
-    function selectLiveClip(index) {
-      const clip = clips[index]; inlineLiveVideo.pause();
-      inlineLiveVideo.src = `assets/${clip.src}`; inlineLiveVideo.poster = `assets/${clip.poster}`; inlineLiveVideo.load();
-      inlineLiveVideo.setAttribute('aria-label', clip.title);
-      document.querySelector('[data-live-meta]').textContent = `${clip.duration} SEC / ${clip.title}`;
-      document.querySelector('[data-live-file]').href = `assets/${clip.src}`;
-      [...clipControls.children].forEach((button, itemIndex) => button.setAttribute('aria-pressed', String(itemIndex === index)));
-    }
-    clips.forEach((clip, index) => {
-      const button = document.createElement('button'); button.type = 'button'; button.textContent = clip.title;
-      button.setAttribute('aria-pressed', String(index === 0));
-      button.addEventListener('click', () => selectLiveClip(index)); clipControls.append(button);
-    });
-  }
-}
+addEventListener('pagehide', stopInlineLiveEmbed);
+addEventListener('pageshow', restoreInlineLiveEmbed);
