@@ -11,6 +11,8 @@
 
 新版的后续修改提交到 `codex/warm-portfolio-20261024`。Vercel 的新版项目跟踪此分支，提交后自动部署到新版地址。保留 `main`，不要将新版合并到 `main`，以免替换旧站。
 
+免费备用站：https://dongli-star.github.io/zhao-mingming-web/ 。GitHub Pages 同样从新版分支的根目录自动发布；`.nojekyll` 保证直接托管现有静态文件。备用站的国内网络可用性需要关闭 VPN 实测，不作为已验证的国内稳定线路。
+
 ## 内容与素材
 
 - `index.html`：简历、作品与页面结构。
