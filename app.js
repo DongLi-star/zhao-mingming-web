@@ -505,16 +505,17 @@ function openProject(key, trigger, initialIndex = 0) {
     });
     jump.addEventListener('click', () => { resultsHeading.scrollIntoView({block: 'start', behavior: 'auto'}); resultsHeading.focus({preventScroll: true}); });
   } else if (project.videos) {
-    const native = document.createElement('video'); native.className = `native-video${project.processImage ? ' portrait-video' : ''}`; native.controls = true; native.playsInline = true; native.preload = 'metadata'; native.setAttribute('aria-label',project.title);
+    const native = document.createElement('video'); native.className = `native-video${project.processImage ? ' portrait-video' : ''}`; native.controls = true; native.playsInline = true; native.preload = 'auto'; native.setAttribute('aria-label',project.title);
     const caption = document.createElement('p'); caption.className = 'media-caption';
     const controls = document.createElement('div'); controls.className = 'film-controls'; controls.setAttribute('role','group'); controls.setAttribute('aria-label','选择短片');
-    function chooseVideo(index) {
+    function chooseVideo(index, startPlayback = true) {
       native.pause(); native.src = `assets/${project.videos[index].src}`; native.poster = `assets/${project.videos[index].poster}`; native.load();
       caption.textContent = `${project.videos[index].title} / ${project.videos[index].duration} 秒 / 创作测试`;
       [...controls.children].forEach((b,i)=>b.setAttribute('aria-pressed',String(i===index)));
+      if (startPlayback) native.play().catch(() => {});
     }
     project.videos.forEach((item,index)=>{const button=document.createElement('button');button.textContent=item.title;button.addEventListener('click',()=>chooseVideo(index));controls.append(button);});
-    dialogBody.append(native,caption,controls); chooseVideo(Math.max(0, Math.min(project.videos.length - 1, initialIndex)));
+    dialogBody.append(native,caption,controls); chooseVideo(Math.max(0, Math.min(project.videos.length - 1, initialIndex)), trigger?.hasAttribute('data-media-index') ?? false);
   } else if (project.groups) {
     project.groups.forEach(group=>{
       const heading=document.createElement('h3');heading.className='gallery-group-title';heading.textContent=group.title;
