@@ -114,47 +114,50 @@
       goToColumn(keys[event.key]);
     });
 
-    // Only consume vertical wheel while this actual viewport is nearly fully visible.
-    // The first event at either horizontal edge always remains native page scrolling.
-    track.addEventListener('wheel', event => {
-      if (event.defaultPrevented || event.ctrlKey || event.metaKey || event.shiftKey) return;
-      if (Math.abs(event.deltaY) <= Math.abs(event.deltaX) || Math.abs(event.deltaY) < .1) return;
-      if (document.querySelector('dialog[open]') || geometry.max <= 1) return;
-      const rect = track.getBoundingClientRect();
-      const viewportHeight = window.innerHeight;
-      const tolerance = Math.min(26, rect.height * .045);
-      if (rect.height > viewportHeight * .98 || rect.top < -tolerance || rect.bottom > viewportHeight + tolerance) return;
+    // These four galleries use native horizontal swipes; vertical input scrolls the page.
+    if (gallery.dataset.galleryBrowse !== 'horizontal') {
+      // Only consume vertical wheel while this actual viewport is nearly fully visible.
+      // The first event at either horizontal edge always remains native page scrolling.
+      track.addEventListener('wheel', event => {
+        if (event.defaultPrevented || event.ctrlKey || event.metaKey || event.shiftKey) return;
+        if (Math.abs(event.deltaY) <= Math.abs(event.deltaX) || Math.abs(event.deltaY) < .1) return;
+        if (document.querySelector('dialog[open]') || geometry.max <= 1) return;
+        const rect = track.getBoundingClientRect();
+        const viewportHeight = window.innerHeight;
+        const tolerance = Math.min(26, rect.height * .045);
+        if (rect.height > viewportHeight * .98 || rect.top < -tolerance || rect.bottom > viewportHeight + tolerance) return;
 
-      const factor = event.deltaMode === 1 ? 18 : event.deltaMode === 2 ? track.clientWidth : 1;
-      const delta = event.deltaY * factor;
-      const before = track.scrollLeft;
-      const atStart = before <= 1;
-      const atEnd = before >= geometry.max - 1;
-      if ((delta < 0 && atStart) || (delta > 0 && atEnd)) {
-        stopWheel();
-        return;
-      }
-      const target = clamp(before + delta, 0, geometry.max);
-      if (Math.abs(target - before) < .1) return;
+        const factor = event.deltaMode === 1 ? 18 : event.deltaMode === 2 ? track.clientWidth : 1;
+        const delta = event.deltaY * factor;
+        const before = track.scrollLeft;
+        const atStart = before <= 1;
+        const atEnd = before >= geometry.max - 1;
+        if ((delta < 0 && atStart) || (delta > 0 && atEnd)) {
+          stopWheel();
+          return;
+        }
+        const target = clamp(before + delta, 0, geometry.max);
+        if (Math.abs(target - before) < .1) return;
 
-      event.preventDefault();
-      // Suspend snap during the wheel burst so short trackpad deltas accumulate.
-      // Native snapping resumes once the physical wheel/trackpad motion settles.
-      track.classList.add('pw-is-wheeling');
-      track.scrollLeft = target;
-      wheelDirection = Math.sign(delta);
-      clearTimeout(wheelTimer);
-      wheelTimer = window.setTimeout(() => {
-        // Even a single mouse-wheel notch reaches the next native snap point.
-        // Long trackpad bursts still travel proportionally through all cards.
-        const fraction = track.scrollLeft / geometry.pitch;
-        const snapColumn = wheelDirection > 0 ? Math.ceil(fraction - .015) : Math.floor(fraction + .015);
-        track.classList.remove('pw-is-wheeling');
-        wheelTimer = 0;
-        track.scrollTo({ left: columnLeft(snapColumn), behavior: movement() });
-        requestUpdate();
-      }, 170);
-    }, { passive: false });
+        event.preventDefault();
+        // Suspend snap during the wheel burst so short trackpad deltas accumulate.
+        // Native snapping resumes once the physical wheel/trackpad motion settles.
+        track.classList.add('pw-is-wheeling');
+        track.scrollLeft = target;
+        wheelDirection = Math.sign(delta);
+        clearTimeout(wheelTimer);
+        wheelTimer = window.setTimeout(() => {
+          // Even a single mouse-wheel notch reaches the next native snap point.
+          // Long trackpad bursts still travel proportionally through all cards.
+          const fraction = track.scrollLeft / geometry.pitch;
+          const snapColumn = wheelDirection > 0 ? Math.ceil(fraction - .015) : Math.floor(fraction + .015);
+          track.classList.remove('pw-is-wheeling');
+          wheelTimer = 0;
+          track.scrollTo({ left: columnLeft(snapColumn), behavior: movement() });
+          requestUpdate();
+        }, 170);
+      }, { passive: false });
+    }
 
     track.addEventListener('scroll', requestUpdate, { passive: true });
     // Native swipe, focus scrolling, and scroll snap all share this same viewport.

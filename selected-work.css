@@ -201,3 +201,9 @@
 /* The skate case bridges atomic references and AI video pre-production. */
 .pw-skate-workflow{margin:32px 0 38px}.pw-skate-heading{display:flex;justify-content:space-between;align-items:end;gap:24px;margin-bottom:20px}.pw-skate-heading h4{font-size:clamp(18px,1.7vw,26px);font-weight:400;letter-spacing:-.035em;margin:13px 0 0}.pw-skate-heading>p{color:var(--pw-muted);font:9px/1.8 var(--pw-mono);margin:0;white-space:nowrap}.pw-skate-preview{display:block;width:100%;padding:0;position:relative;background:#f1f5f8;border:1px solid #35322e;text-align:left;overflow:hidden}.pw-skate-preview>img{display:block;width:100%;height:auto;aspect-ratio:25/11;object-fit:contain}.pw-skate-preview>span{display:flex;justify-content:space-between;align-items:center;background:#191817;color:#beb6aa;padding:15px 18px;font:9px/1.8 var(--pw-mono)}.pw-skate-preview i{font-style:normal;color:var(--pw-purple);font-size:22px}.pw-skate-footer{display:flex;align-items:center;justify-content:space-between;gap:28px;padding-top:17px}.pw-skate-footer>p{color:var(--pw-muted);font-size:11px;line-height:1.9;max-width:670px;margin:0}.pw-skate-footer .pw-text-link{flex-shrink:0}.pw-workflow-canvas-label{margin-bottom:16px}
 @media(max-width:760px){.pw-skate-workflow{margin:26px 0 32px}.pw-skate-heading{display:block;margin-bottom:16px}.pw-skate-heading h4{font-size:19px;line-height:1.6}.pw-skate-heading>p{font-size:8px;margin-top:9px}.pw-skate-preview>span{padding:12px;font-size:7px;line-height:1.9;gap:12px}.pw-skate-preview i{font-size:20px}.pw-skate-footer{display:block;padding-top:13px}.pw-skate-footer>p{font-size:10px}.pw-skate-footer .pw-text-link{margin-top:12px}}
+
+/* Manual galleries retain the existing controls and adapt only their browsing hint. */
+@media (max-width: 760px) {
+  .pw-gallery[data-gallery-browse="horizontal"] .pw-hint-desktop { display: none; }
+  .pw-gallery[data-gallery-browse="horizontal"] .pw-hint-mobile { display: inline; }
+}
