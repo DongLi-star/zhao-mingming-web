@@ -316,9 +316,19 @@ Object.assign(projects, {
     "externalPlayer": true,
     "films": [
       [
+        "AI产品广告—面霜护肤",
+        "13777671",
+        "DaLZwPqBqVD4nrjY"
+      ],
+      [
         "AI产品广告—数码耳机",
         "13777724",
         "qd9g4rDmDOr7v86Z"
+      ],
+      [
+        "AI产品广告—运动鞋",
+        "13777664",
+        "KdRx7bZoZ8R7b2N3"
       ],
       [
         "AI产品广告—护肤精油",
@@ -326,19 +336,9 @@ Object.assign(projects, {
         "n2k9QAVaVzr718MZ"
       ],
       [
-        "AI产品广告—面霜护肤",
-        "13777671",
-        "DaLZwPqBqVD4nrjY"
-      ],
-      [
         "AI产品广告—饮品饮料",
         "13777668",
         "Mnp8wWk6kelwK0lG"
-      ],
-      [
-        "AI产品广告—运动鞋",
-        "13777664",
-        "KdRx7bZoZ8R7b2N3"
       ]
     ]
   },
