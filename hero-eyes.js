@@ -2,28 +2,41 @@
  * The optical warp stays inside the eye whites; glasses and face stay intact. */
 (() => {
  'use strict';
- const video=document.getElementById('hero-video'),stage=video?.parentElement,hero=document.getElementById('home');
+ const video=document.getElementById('hero-video'),poster=document.getElementById('hero-poster'),stage=video?.parentElement,hero=document.getElementById('home');
+ const mobile=matchMedia('(max-width: 760px)');
  if(!video||!stage||!hero)return;
  const canvas=document.createElement('canvas');canvas.className='hero-eye-canvas';canvas.setAttribute('aria-hidden','true');
  const gl=canvas.getContext('webgl',{alpha:false,antialias:false,depth:false,powerPreference:'low-power'});
  if(!gl)return;
  let track=null,visible=true,enabled=document.body.classList.contains('is-motion-active'),lost=false,dirtyTexture=true,frame=0,paintTime=0;
- let look=[0,0],target=[0,0];
+ let look=[0,mobile.matches?-1:0],target=look.slice();
  const clamp=(n,a=-1,b=1)=>Math.max(a,Math.min(b,n));
  const vertex='attribute vec2 a;varying vec2 uv;void main(){uv=(a+1.0)*0.5;gl_Position=vec4(a,0.0,1.0);}';
  const fragment=`precision highp float;
  varying vec2 uv;uniform sampler2D image;uniform vec2 size;uniform vec2 gaze;
- uniform vec4 leftEye;uniform vec4 rightEye;uniform vec2 confidence;
+ uniform vec4 leftEye;uniform vec4 rightEye;uniform vec2 confidence;uniform float mobileMode;uniform float headPitch;
+ vec2 headWarp(vec2 p){
+  float assetScale=size.x/1284.0;
+  vec2 center=vec2(866.0,355.0)*assetScale;
+  vec2 q=(p-center)/(vec2(390.0,330.0)*assetScale);
+  float volume=pow(max(0.0,1.0-dot(q,q)),1.5);
+  float neck=1.0-smoothstep(550.0,645.0,p.y/assetScale);
+  // A small depth warp around the neck moves face, glasses and hat together.
+  // It is a 2.5D nod of the existing portrait, not a new camera angle.
+  p.y-=headPitch*mobileMode*30.0*assetScale*volume*neck;
+  p.x+=(p.x-center.x)*headPitch*mobileMode*.025*volume*neck;
+  return p;
+ }
  vec2 eyeWarp(vec2 p,vec4 eye,float certainty){
   float assetScale=size.x/1284.0;
   vec2 radius=max(eye.zw*vec2(1.9,1.65),vec2(12.0,16.0)*assetScale);
   vec2 q=(p-eye.xy)/radius;
   float falloff=1.0-smoothstep(0.30,1.0,dot(q,q));
-  vec2 travel=min(vec2(7.0,5.0)*assetScale,eye.zw*vec2(0.32,0.24));
+  vec2 travel=min(vec2(7.0,mix(5.0,9.0,mobileMode))*assetScale,eye.zw*vec2(0.32,mix(.24,.38,mobileMode)));
   return p-gaze*travel*falloff*certainty;
  }
  void main(){
-  vec2 p=vec2(uv.x,1.0-uv.y)*size;
+  vec2 p=headWarp(vec2(uv.x,1.0-uv.y)*size);
   p+=eyeWarp(p,leftEye,confidence.x)-p;
   p+=eyeWarp(p,rightEye,confidence.y)-p;
   gl_FragColor=texture2D(image,vec2(p.x/size.x,1.0-p.y/size.y));
@@ -41,7 +54,7 @@
  gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
  gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
  gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,true);
- const uniforms=Object.fromEntries(['size','gaze','leftEye','rightEye','confidence'].map(name=>[name,gl.getUniformLocation(program,name)]));
+ const uniforms=Object.fromEntries(['size','gaze','leftEye','rightEye','confidence','mobileMode','headPitch'].map(name=>[name,gl.getUniformLocation(program,name)]));
  stage.append(canvas);
  function eyesAt(time){
   const f=clamp(time*track.fps,0,track.frames.length-1),i=Math.floor(f),next=track.frames[Math.min(i+1,track.frames.length-1)],mix=f-i;
@@ -50,27 +63,36 @@
  function queue(){if(!frame&&visible&&enabled&&track&&!lost)frame=requestAnimationFrame(paint)}
  function hide(){canvas.classList.remove('is-ready');stage.classList.remove('has-eye-layer');canvas.dataset.eyeLayer='fallback';cancelAnimationFrame(frame);frame=0}
  function paint(){
-  frame=0;if(!enabled||!visible||!track||video.readyState<2||!video.classList.contains('is-ready'))return;
+  frame=0;if(!enabled||!visible||!track)return;
+  const source=mobile.matches?poster:video;
+  if(mobile.matches?(!poster.complete||!poster.naturalWidth):(video.readyState<2||!video.classList.contains('is-ready')))return;
   if(dirtyTexture){
-   if(video.seeking)return;
-   if(canvas.width!==video.videoWidth||canvas.height!==video.videoHeight){canvas.width=video.videoWidth;canvas.height=video.videoHeight;gl.viewport(0,0,canvas.width,canvas.height)}
-   try{gl.texImage2D(gl.TEXTURE_2D,0,gl.RGB,gl.RGB,gl.UNSIGNED_BYTE,video)}catch{hide();return}
-   paintTime=video.currentTime;dirtyTexture=false;
+   if(!mobile.matches&&video.seeking)return;
+   const width=mobile.matches?poster.naturalWidth:video.videoWidth,height=mobile.matches?poster.naturalHeight:video.videoHeight;
+   if(canvas.width!==width||canvas.height!==height){canvas.width=width;canvas.height=height;gl.viewport(0,0,canvas.width,canvas.height)}
+   try{gl.texImage2D(gl.TEXTURE_2D,0,gl.RGB,gl.RGB,gl.UNSIGNED_BYTE,source)}catch{hide();return}
+   paintTime=mobile.matches?2:video.currentTime;dirtyTexture=false;
   }
   look=look.map((v,i)=>Math.abs(target[i]-v)<.002?target[i]:v+(target[i]-v)*.30);
   const eyes=eyesAt(paintTime),sx=canvas.width/track.width,sy=canvas.height/track.height;
   gl.uniform2f(uniforms.size,canvas.width,canvas.height);gl.uniform2f(uniforms.gaze,...look);
+  gl.uniform1f(uniforms.mobileMode,mobile.matches?1:0);gl.uniform1f(uniforms.headPitch,mobile.matches?look[1]:0);
   eyes.forEach((eye,i)=>gl.uniform4f(i?uniforms.rightEye:uniforms.leftEye,eye[0]*sx,eye[1]*sy,eye[2]*sx,eye[3]*sy));
   gl.uniform2f(uniforms.confidence,eyes[0][4],eyes[1][4]);gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
   canvas.classList.add('is-ready');stage.classList.add('has-eye-layer');canvas.dataset.eyeLayer='ready';
-  canvas.dataset.gazeX=look[0].toFixed(3);canvas.dataset.gazeY=look[1].toFixed(3);canvas.dataset.frameTime=paintTime.toFixed(3);
+  canvas.dataset.gazeX=look[0].toFixed(3);canvas.dataset.gazeY=look[1].toFixed(3);canvas.dataset.frameTime=paintTime.toFixed(3);canvas.dataset.source=mobile.matches?'portrait':'video';canvas.dataset.headPitch=(mobile.matches?look[1]:0).toFixed(3);
   if(look.some((v,i)=>v!==target[i]))queue();
  }
  function newFrame(){dirtyTexture=true;queue()}
  video.addEventListener('seeked',newFrame);video.addEventListener('loadeddata',newFrame);
- video.addEventListener('emptied',()=>{dirtyTexture=true;hide()});video.addEventListener('error',hide);
+ video.addEventListener('emptied',()=>{dirtyTexture=true;hide();if(mobile.matches)queue()});video.addEventListener('error',()=>{if(!mobile.matches)hide()});
+ poster.addEventListener('load',newFrame);
+ document.addEventListener('portfolio-hero-look',event=>{
+  if(!mobile.matches)return;
+  target=[0,clamp(Number(event.detail?.pitch)||0)];queue();
+ });
  document.addEventListener('pointermove',event=>{
-  if(!enabled||!visible||!track||event.pointerType==='touch'||event.target.closest('#hero-direction'))return;
+  if(mobile.matches||!enabled||!visible||!track||event.pointerType==='touch'||event.target.closest('#hero-direction'))return;
   const h=hero.getBoundingClientRect();if(event.clientY<h.top||event.clientY>h.bottom){target=[0,0];queue();return}
   const eyes=eyesAt(paintTime),r=canvas.getBoundingClientRect(),fit=Math.max(r.width/track.width,r.height/track.height);
   const position=parseFloat(getComputedStyle(canvas).objectPosition)/100;
@@ -80,7 +102,8 @@
   target=[clamp((event.clientX-screenX)/Math.max(180,h.width*.32)),clamp((event.clientY-screenY)/Math.max(140,h.height*.32))];queue();
  });
  document.getElementById('hero-direction').addEventListener('input',()=>{target=[0,0];queue()});
- document.addEventListener('portfolio-motion-state',event=>{enabled=Boolean(event.detail?.enabled);look=target=[0,0];if(!enabled)hide();else newFrame()});
+ document.addEventListener('portfolio-motion-state',event=>{enabled=Boolean(event.detail?.enabled);target=[0,mobile.matches?Number(hero.dataset.mobilePitch??-1):0];look=target.slice();if(!enabled)hide();else newFrame()});
+ mobile.addEventListener('change',()=>{target=[0,mobile.matches?Number(hero.dataset.mobilePitch??-1):0];look=target.slice();newFrame()});
  new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;if(!visible){cancelAnimationFrame(frame);frame=0}else queue()},{threshold:0}).observe(hero);
  canvas.addEventListener('webglcontextlost',event=>{event.preventDefault();lost=true;hide()});
  addEventListener('pagehide',()=>{cancelAnimationFrame(frame);hide()});
