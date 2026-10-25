@@ -90,7 +90,8 @@
   enabled=!pref.matches&&(manual??true);document.body.classList.toggle('is-motion-active',enabled);document.body.classList.toggle('motion-enabled',enabled);
   toggle.setAttribute('aria-pressed',String(!enabled));toggle.querySelector('[data-motion-label]').textContent=enabled?'暂停动效':'开启动效';
   toggle.disabled=pref.matches;if(pref.matches)toggle.querySelector('[data-motion-label]').textContent='已减少动态效果';
-  hint.textContent=enabled?(mobile.matches?'↓ 向下滑动，和我一起看看':coarse.matches?'↔ 拖动滑杆，改变角色朝向':'↔ 移动鼠标，和我打个招呼'):'角色静态预览';slider.disabled=!enabled||mobile.matches;
+  hint.textContent=enabled?(mobile.matches?'向下滑动，和我一起看看':coarse.matches?'拖动滑杆，改变角色朝向':'移动鼠标，和我打个招呼'):'角色静态预览';slider.disabled=!enabled||mobile.matches;
+  if(enabled)hint.insertAdjacentHTML('afterbegin',uiIconMarkup(mobile.matches?'down':'horizontal')+' ');
   if(enabled&&!mobile.matches)loadVideo();else{generation++;controller?.abort();video.pause();video.classList.remove('is-ready');video.removeAttribute('src');video.load();if(objectURL){URL.revokeObjectURL(objectURL);objectURL=null}}
   measureNeeded=true;document.dispatchEvent(new CustomEvent('portfolio-motion-state',{detail:{enabled}}));queueScroll();
  }
