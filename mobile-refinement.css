@@ -45,3 +45,38 @@
  .felt-hero-intro{font-size:10px}
  .intro-detail{font-size:10px}
 }
+
+/* SVG strokes stay monochrome on iOS, including controls created inside dialogs. */
+.ui-icon{display:inline-block;width:1em;height:1em;vertical-align:-.14em;flex-shrink:0;pointer-events:none;overflow:visible}
+.felt-video-stage>picture{position:absolute;inset:0;display:block}
+.felt-video-stage>picture>img{position:absolute;width:100%;height:100%;object-fit:cover;object-position:62% center}
+.pp-mobile-flow,.pp-mobile-connector{display:none}
+/* The desktop process arrows use the same stroke shape instead of font glyphs. */
+.pp-generation-steps:before,.pp-generation-steps:after{content:'';width:18px;height:18px;background:currentColor;mask:center/contain no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M5 12h14m-6-6 6 6-6 6' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")}
+@media(max-width:760px){
+ .felt-video-stage>picture>img{object-position:80% center}
+ .pw-portrait-board{position:relative;padding:19px 16px 19px 38px}
+ .pw-portrait-board:before{content:'';position:absolute;left:19px;top:113px;bottom:115px;width:1px;background:#c3a07e}
+ .pp-mobile-flow{position:relative;z-index:1;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px;list-style:none;padding:13px 10px;margin:0 0 24px -22px;border:1px solid #d9c2a3;border-radius:11px;background:#fff6e8}
+ .pp-mobile-flow li{position:relative;min-width:0;display:flex;flex-direction:column;gap:5px}
+ .pp-flow-number{font:8px var(--mono);color:#a45b34}
+ .pp-mobile-flow strong{font-size:11px;line-height:1.4;font-weight:550}
+ .pp-mobile-flow small{font-size:7px;line-height:1.6;color:#826b56;white-space:nowrap}
+ .pp-flow-arrow{position:absolute;right:-13px;top:22px;color:#ad7249;font-size:12px}
+ .pw-portrait-board>section{position:relative}
+ .pw-portrait-board>section:before{content:attr(data-step);position:absolute;left:-30px;top:0;display:grid;place-items:center;width:23px;height:23px;background:#fff6e8;border:1px solid #c9a17a;border-radius:50%;font:8px var(--mono);color:#9c4f2b}
+ .pw-character-chapter .pp-source>.pp-stage-label{display:block}
+ .pw-portrait-board .pp-stage-label{min-height:0;margin:0 0 14px;text-align:left}
+ .pw-portrait-board .pp-stage-label>span{display:none}
+ .pw-portrait-board .pp-stage-label h5{font-size:17px;line-height:1.5;margin:0}
+ .pw-portrait-board .pp-stage-label p{font-size:9px;line-height:1.7;margin:5px 0 0}
+ .pp-mobile-connector{display:flex;align-items:center;gap:8px;padding:19px 0;margin:0!important;font-size:9px;line-height:1.7;color:#a2613b}
+ .pp-mobile-connector .ui-icon{width:15px;height:15px}
+ .pp-generation,.pp-library{margin-top:0}
+ .pp-generation-steps{gap:7px;padding-top:0}
+ .pp-generation-steps>div{padding:11px 9px;border-radius:10px}
+ .pp-generation-steps strong{font-size:12px;line-height:1.5;margin:7px 0}
+ .pp-generation-steps p{font-size:9px;line-height:1.7}
+ .pp-generation-steps:before,.pp-generation-steps:after{display:none}
+ .pp-library-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px 8px}
+}
