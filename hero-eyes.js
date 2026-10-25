@@ -1,5 +1,5 @@
-/* Small, frame-tracked eye movement on the existing character video.
- * The optical warp stays inside the eye whites; glasses and face stay intact. */
+/* Desktop video gaze and a clearly upward-looking mobile portrait.
+ * Mobile scroll adds a coherent head pitch and eye movement within the eye whites. */
 (() => {
  'use strict';
  const video=document.getElementById('hero-video'),poster=document.getElementById('hero-poster'),stage=video?.parentElement,hero=document.getElementById('home');
@@ -16,27 +16,49 @@
  varying vec2 uv;uniform sampler2D image;uniform vec2 size;uniform vec2 gaze;
  uniform vec4 leftEye;uniform vec4 rightEye;uniform vec2 confidence;uniform float mobileMode;uniform float headPitch;
  vec2 headWarp(vec2 p){
+  if(mobileMode<0.5)return p;
   float assetScale=size.x/1284.0;
-  vec2 center=vec2(866.0,355.0)*assetScale;
-  vec2 q=(p-center)/(vec2(390.0,330.0)*assetScale);
-  float volume=pow(max(0.0,1.0-dot(q,q)),1.5);
+  vec2 center=vec2(856.0,360.0)*assetScale;
+  vec2 q=(p-center)/(vec2(390.0,345.0)*assetScale);
+  float volume=sqrt(max(0.0,1.0-dot(q,q)));
   float neck=1.0-smoothstep(550.0,645.0,p.y/assetScale);
-  // A small depth warp around the neck moves face, glasses and hat together.
-  // It is a 2.5D nod of the existing portrait, not a new camera angle.
-  p.y-=headPitch*mobileMode*30.0*assetScale*volume*neck;
-  p.x+=(p.x-center.x)*headPitch*mobileMode*.025*volume*neck;
-  return p;
+  float angle=-headPitch*.34,depth=180.0*assetScale*volume;
+  float pivot=620.0*assetScale,dy=p.y-pivot,focal=1450.0*assetScale;
+  float perspective=(focal-depth)/(focal-dy*sin(angle)-depth*cos(angle));
+  vec2 samplePoint=vec2(center.x+(p.x-center.x)/perspective,pivot+(dy/perspective+depth*sin(angle))/cos(angle));
+  float influence=(1.0-smoothstep(.55,1.0,dot(q,q)))*neck;
+  return mix(p,samplePoint,influence);
  }
  vec2 eyeWarp(vec2 p,vec4 eye,float certainty){
   float assetScale=size.x/1284.0;
-  vec2 radius=max(eye.zw*vec2(1.9,1.65),vec2(12.0,16.0)*assetScale);
+  vec2 radius=mix(max(eye.zw*vec2(1.9,1.65),vec2(12.0,16.0)*assetScale),eye.zw,mobileMode);
   vec2 q=(p-eye.xy)/radius;
   float falloff=1.0-smoothstep(0.30,1.0,dot(q,q));
-  vec2 travel=min(vec2(7.0,mix(5.0,9.0,mobileMode))*assetScale,eye.zw*vec2(0.32,mix(.24,.38,mobileMode)));
+  vec2 travel=mix(min(vec2(7.0,5.0)*assetScale,eye.zw*vec2(.32,.24)),vec2(0.0,40.0)*assetScale,mobileMode);
   return p-gaze*travel*falloff*certainty;
+ }
+ vec3 imageColor(vec2 p){return texture2D(image,vec2(p.x/size.x,1.0-p.y/size.y)).rgb;}
+ vec3 mobileEyeColor(vec2 p,vec4 eye,vec2 origin,vec3 color){
+  float assetScale=size.x/1284.0;
+  origin*=assetScale;
+  float radius=22.5*assetScale;
+  vec2 destination=origin+vec2(0.0,38.0*assetScale*gaze.y);
+  float oldMask=1.0-smoothstep(24.0*assetScale,26.0*assetScale,length(p-origin));
+  vec2 local=(p-eye.xy)/eye.zw;
+  vec3 white=imageColor(eye.xy+vec2(-14.0,12.0)*assetScale);
+  white*=1.025-.045*dot(local,local);
+  color=mix(color,white,oldMask);
+  float newMask=1.0-smoothstep(radius-.6*assetScale,radius+.6*assetScale,length(p-destination));
+  float eyeMask=1.0-smoothstep(.82,1.0,dot(local,local));
+  return mix(color,imageColor(origin+p-destination),newMask*eyeMask);
  }
  void main(){
   vec2 p=headWarp(vec2(uv.x,1.0-uv.y)*size);
+  if(mobileMode>0.5){
+   vec3 color=imageColor(p);
+   if(gaze.y>.001){color=mobileEyeColor(p,leftEye,vec2(794.0,275.0),color);color=mobileEyeColor(p,rightEye,vec2(910.0,294.0),color);}
+   gl_FragColor=vec4(color,1.0);return;
+  }
   p+=eyeWarp(p,leftEye,confidence.x)-p;
   p+=eyeWarp(p,rightEye,confidence.y)-p;
   gl_FragColor=texture2D(image,vec2(p.x/size.x,1.0-p.y/size.y));
@@ -74,9 +96,11 @@
    paintTime=mobile.matches?2:video.currentTime;dirtyTexture=false;
   }
   look=look.map((v,i)=>Math.abs(target[i]-v)<.002?target[i]:v+(target[i]-v)*.30);
-  const eyes=eyesAt(paintTime),sx=canvas.width/track.width,sy=canvas.height/track.height;
-  gl.uniform2f(uniforms.size,canvas.width,canvas.height);gl.uniform2f(uniforms.gaze,...look);
-  gl.uniform1f(uniforms.mobileMode,mobile.matches?1:0);gl.uniform1f(uniforms.headPitch,mobile.matches?look[1]:0);
+  // White-of-eye centers on the new upward portrait; desktop retains frame tracking.
+  const eyes=mobile.matches?[[794,299,40,35,1],[912,317,39,36,1]]:eyesAt(paintTime),sx=canvas.width/track.width,sy=canvas.height/track.height;
+  const progress=(look[1]+1)/2;
+  gl.uniform2f(uniforms.size,canvas.width,canvas.height);gl.uniform2f(uniforms.gaze,look[0],mobile.matches?progress:look[1]);
+  gl.uniform1f(uniforms.mobileMode,mobile.matches?1:0);gl.uniform1f(uniforms.headPitch,mobile.matches?progress:0);
   eyes.forEach((eye,i)=>gl.uniform4f(i?uniforms.rightEye:uniforms.leftEye,eye[0]*sx,eye[1]*sy,eye[2]*sx,eye[3]*sy));
   gl.uniform2f(uniforms.confidence,eyes[0][4],eyes[1][4]);gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
   canvas.classList.add('is-ready');stage.classList.add('has-eye-layer');canvas.dataset.eyeLayer='ready';
