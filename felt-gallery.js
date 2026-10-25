@@ -38,6 +38,11 @@
       const maxColumn = Math.max(0, columns - visible);
       const pages = max > 1 ? Math.ceil(maxColumn / visible) + 1 : 1;
       geometry = { pitch, columns, visible, max, maxColumn, pages };
+      const trackRect = track.getBoundingClientRect();
+      const galleryRect = gallery.getBoundingClientRect();
+      gallery.style.setProperty('--gallery-center-y', `${trackRect.top - galleryRect.top + trackRect.height / 2}px`);
+      gallery.style.setProperty('--gallery-inset-left', `${trackRect.left - galleryRect.left}px`);
+      gallery.style.setProperty('--gallery-inset-right', `${galleryRect.right - trackRect.right}px`);
 
       if (dots.children.length !== pages) {
         dots.replaceChildren(...Array.from({ length: pages }, (_, index) => {
