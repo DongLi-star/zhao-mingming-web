@@ -1,6 +1,13 @@
 const $ = (selector, scope = document) => scope.querySelector(selector);
 const $$ = (selector, scope = document) => [...scope.querySelectorAll(selector)];
 
+// Shared, font-independent line icons for links and generated player controls.
+function uiIconMarkup(name = 'ne') {
+  const paths = {"ne": "M5 19 19 5M5 5h14v14", "left": "M19 12H5m6-6-6 6 6 6", "right": "M5 12h14m-6-6 6 6-6 6", "down": "M12 5v14m-6-6 6 6 6-6", "up": "M12 19V5m-6 6 6-6 6 6", "horizontal": "M4 12h16M8 8l-4 4 4 4m8-8 4 4-4 4", "burst": "M12 3v18M3 12h18M5.6 5.6l12.8 12.8M5.6 18.4 18.4 5.6"};
+  return `<svg class="ui-icon ui-icon-${name}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="${paths[name] || paths.ne}"/></svg>`;
+}
+function appendUiIcon(parent, name = 'ne') { parent.insertAdjacentHTML('beforeend', ' ' + uiIconMarkup(name)); }
+
 const menuButton = $('.menu-toggle');
 const mobileNav = $('#mobile-nav');
 function closeMenu() {
@@ -535,7 +542,7 @@ function setFilm(project, index) {
   $('.media-caption', dialogBody).textContent = film[0];
   const link = $('.external-film', dialogBody);
   link.href = project.externalPlayer ? iframe.src : `https://www.xinpianchang.com/a${film[1]}`;
-  link.textContent = project.externalPlayer ? '在新片场播放器中打开 ↗' : '在新片场打开此作品 ↗';
+  link.textContent = project.externalPlayer ? '在新片场播放器中打开' : '在新片场打开此作品'; appendUiIcon(link);
 }
 function openProject(key, trigger, initialIndex = 0) {
   const project = projects[key];
@@ -553,7 +560,7 @@ function openProject(key, trigger, initialIndex = 0) {
   }
   if (project.portraitLibrary) {
     const library = project.portraitLibrary;
-    const jump = document.createElement('button'); jump.type = 'button'; jump.className = 'portrait-library-jump'; jump.textContent = '浏览 50 张 AI 泛化人像 ↓';
+    const jump = document.createElement('button'); jump.type = 'button'; jump.className = 'portrait-library-jump'; jump.textContent = '浏览 50 张 AI 泛化人像'; appendUiIcon(jump, 'down');
     dialogBody.append(jump);
     let resultsHeading;
     [['模特实拍 · 原始拍摄', library.sources, true], ['AI 模特人像库 · 50 张生成资产', library.results, false]].forEach(([label, items, original]) => {
@@ -574,7 +581,7 @@ function openProject(key, trigger, initialIndex = 0) {
     const player = document.createElement('iframe'); player.className = `native-video${project.processImage ? ' portrait-video' : ''}`; player.allow = 'fullscreen; picture-in-picture'; player.allowFullscreen = true; player.referrerPolicy = 'strict-origin-when-cross-origin';
     const caption = document.createElement('p'); caption.className = 'media-caption';
     const controls = document.createElement('div'); controls.className = 'film-controls'; controls.setAttribute('role','group'); controls.setAttribute('aria-label','选择短片');
-    const link = document.createElement('a'); link.className = 'external-film'; link.target = '_blank'; link.rel = 'noopener noreferrer'; link.textContent = '在新片场播放器中打开 ↗';
+    const link = document.createElement('a'); link.className = 'external-film'; link.target = '_blank'; link.rel = 'noopener noreferrer'; link.textContent = '在新片场播放器中打开'; appendUiIcon(link);
     function chooseVideo(index) {
       const clip = project.videos[index]; player.src = clip.embed; player.title = clip.title;
       caption.textContent = `${clip.title} / ${clip.duration} 秒 / 创作测试`;
