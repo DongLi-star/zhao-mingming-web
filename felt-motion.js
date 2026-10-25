@@ -2,7 +2,7 @@
 (() => {
  'use strict';
  const hero=document.querySelector('.felt-home'), video=document.getElementById('hero-video'),poster=document.getElementById('hero-poster'),slider=document.getElementById('hero-direction'),hint=document.getElementById('hero-hint');
- const pref=matchMedia('(prefers-reduced-motion: reduce)'),coarse=matchMedia('(pointer: coarse)');
+ const pref=matchMedia('(prefers-reduced-motion: reduce)'),coarse=matchMedia('(pointer: coarse)'),mobile=matchMedia('(max-width: 760px)');
  const toggle=document.querySelector('[data-motion-toggle]'),header=document.querySelector('.site-header'),art=document.querySelector('.about-portrait');
  const meter=document.createElement('div');meter.className='felt-scroll-progress';document.body.append(meter);
  let manual=null,enabled=false,target=.5,seekFrame=0,scrollFrame=0,objectURL=null,controller=null,generation=0,heroVisible=true;
@@ -32,7 +32,7 @@
   }catch(error){if(error.name!=='AbortError'){hint.textContent='角色静态预览';slider.disabled=true}}
  }
  document.addEventListener('pointermove',event=>{
-  if(!enabled||!heroVisible||event.pointerType==='touch'||event.target.closest('#hero-direction'))return;
+  if(mobile.matches||!enabled||!heroVisible||event.pointerType==='touch'||event.target.closest('#hero-direction'))return;
   const h=hero.getBoundingClientRect();if(event.clientY<h.top||event.clientY>h.bottom)return;
   const r=video.getBoundingClientRect(),vw=video.videoWidth||1284,vh=video.videoHeight||724;
   const fit=Math.max(r.width/vw,r.height/vh),position=parseFloat(getComputedStyle(video).objectPosition)/100;
@@ -73,6 +73,12 @@
  function updateScroll(){
   scrollFrame=0;if(measureNeeded)measureParallax();const y=scrollY,h=innerHeight;header.dataset.scrolled=String(y>60);
   meter.style.width=100*clamp(y/Math.max(1,document.documentElement.scrollHeight-h))+'%';
+  if(mobile.matches){
+   const progress=clamp((y-hero.offsetTop)/Math.max(220,Math.min(hero.offsetHeight*.42,h*.52)));
+   const pitch=-1+2*progress*progress*(3-2*progress);
+   hero.dataset.mobilePitch=pitch.toFixed(3);
+   if(enabled&&heroVisible)document.dispatchEvent(new CustomEvent('portfolio-hero-look',{detail:{pitch}}));
+  }else delete hero.dataset.mobilePitch;
   if(enabled){const p=clamp(y/hero.offsetHeight);hero.style.setProperty('--hero-drift',p*85+'px');hero.style.setProperty('--hero-zoom',1+p*.06);hero.style.setProperty('--copy-drift',-p*85+'px');
    if(art){const r=document.querySelector('.about').getBoundingClientRect();art.style.setProperty('--photo-drift',clamp((h*.5-r.top)/h,-1,1)*28+'px')}
   }else{hero.style.removeProperty('--hero-drift');hero.style.removeProperty('--hero-zoom');hero.style.removeProperty('--copy-drift');art?.style.removeProperty('--photo-drift')}
@@ -84,11 +90,11 @@
   enabled=!pref.matches&&(manual??true);document.body.classList.toggle('is-motion-active',enabled);document.body.classList.toggle('motion-enabled',enabled);
   toggle.setAttribute('aria-pressed',String(!enabled));toggle.querySelector('[data-motion-label]').textContent=enabled?'暂停动效':'开启动效';
   toggle.disabled=pref.matches;if(pref.matches)toggle.querySelector('[data-motion-label]').textContent='已减少动态效果';
-  hint.textContent=enabled?(coarse.matches?'↔ 拖动滑杆，改变角色朝向':'↔ 移动鼠标，和我打个招呼'):'角色静态预览';slider.disabled=!enabled;
-  if(enabled)loadVideo();else{generation++;controller?.abort();video.pause();video.classList.remove('is-ready');video.removeAttribute('src');video.load();if(objectURL){URL.revokeObjectURL(objectURL);objectURL=null}}
+  hint.textContent=enabled?(mobile.matches?'↓ 向下滑动，和我一起看看':coarse.matches?'↔ 拖动滑杆，改变角色朝向':'↔ 移动鼠标，和我打个招呼'):'角色静态预览';slider.disabled=!enabled||mobile.matches;
+  if(enabled&&!mobile.matches)loadVideo();else{generation++;controller?.abort();video.pause();video.classList.remove('is-ready');video.removeAttribute('src');video.load();if(objectURL){URL.revokeObjectURL(objectURL);objectURL=null}}
   measureNeeded=true;document.dispatchEvent(new CustomEvent('portfolio-motion-state',{detail:{enabled}}));queueScroll();
  }
- toggle.addEventListener('click',()=>{manual=!enabled;applyMotion()});pref.addEventListener('change',applyMotion);
+ toggle.addEventListener('click',()=>{manual=!enabled;applyMotion()});pref.addEventListener('change',applyMotion);mobile.addEventListener('change',applyMotion);
  new IntersectionObserver(entries=>{heroVisible=entries[0].isIntersecting;if(heroVisible)queueSeek()},{threshold:0}).observe(hero);
  function refreshParallax(){measureNeeded=true;queueScroll()}
  const layoutObserver=new ResizeObserver(refreshParallax);layoutObserver.observe(document.querySelector('main'));
