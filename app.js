@@ -462,9 +462,9 @@ Object.assign(projects, {
     ]
   },
   "liveScenes": {
-    "title": "让直播间，拥有新的想象",
+    "title": "让AI直播间，拥有新的想象",
     "category": "AI IMAGE / LIVE SPACE STUDIES",
-    "description": "21 张直播间视觉效果测试，涵盖美妆专柜、东方美学、3C 极客与珠宝文玩。从机位与人物尺度，到空间氛围与产品陈列，探索不同品类的视觉表达。",
+    "description": "21 张AI直播间视觉效果测试，涵盖美妆专柜、东方美学、3C 极客与珠宝文玩。从机位与人物尺度，到空间氛围与产品陈列，探索不同品类的视觉表达。",
     "groups": [
       {
         "title": "美妆专柜",
@@ -510,19 +510,19 @@ Object.assign(projects, {
     ]
   },
   "liveProject": {
-    "title": "直播间 · 从构想到动态",
+    "title": "AI直播间 · 从构想到动态",
     "category": "AI PROJECT / CREATIVE PROCESS",
-    "description": "从视觉参考、空间搭建，到界面效果与动态测试。连接场景、人物和商品，呈现 AI 直播间由概念走向动态的创作过程。包含搭建流程图与两组人物口播展示。",
+    "description": "从视觉参考、空间搭建，到界面效果与动态测试。连接场景、人物和商品，呈现 AI直播间由概念走向动态的创作过程。包含搭建流程图与两组人物口播展示。",
     "processImage": "recent/live-workflow.jpg",
     "videos": [
       {
-        "title": "直播间人物口播 · 示例 01",
+        "title": "AI直播间人物口播 · 示例 01",
         "embed": "https://player.xinpianchang.com/?aid=13853534&mid=8pvbQYpR9mk4306X",
         "poster": "recent/video-13-1.jpg",
         "duration": 15.0
       },
       {
-        "title": "直播间人物口播 · 示例 02",
+        "title": "AI直播间人物口播 · 示例 02",
         "embed": "https://player.xinpianchang.com/?aid=13854180&mid=E6WlQgN5md14gdJz",
         "duration": null
       }
@@ -559,8 +559,8 @@ function openProject(key, trigger, initialIndex = 0) {
   $('#dialog-description').textContent = project.description;
   dialogBody.replaceChildren();
   if (project.processImage) {
-    const link = document.createElement('a'); link.href = `assets/${project.processImage}`; link.target = '_blank'; link.rel = 'noopener noreferrer'; link.className = 'process-image-link'; link.setAttribute('aria-label',`打开${project.processLabel || '直播间搭建流程'}大图`);
-    const image = document.createElement('img'); image.src = link.href; image.alt = `${project.processLabel || '直播间搭建流程'}，点击查看大图`; link.append(image); dialogBody.append(link);
+    const link = document.createElement('a'); link.href = `assets/${project.processImage}`; link.target = '_blank'; link.rel = 'noopener noreferrer'; link.className = 'process-image-link'; link.setAttribute('aria-label',`打开${project.processLabel || 'AI直播间搭建流程'}大图`);
+    const image = document.createElement('img'); image.src = link.href; image.alt = `${project.processLabel || 'AI直播间搭建流程'}，点击查看大图`; link.append(image); dialogBody.append(link);
     const note = document.createElement('p'); note.className = 'media-caption'; note.textContent = `${project.processLabel || '搭建流程'} / 点击图片打开完整大图`; dialogBody.append(note);
   }
   if (project.portraitLibrary) {
@@ -599,7 +599,7 @@ function openProject(key, trigger, initialIndex = 0) {
     project.groups.forEach(group=>{
       const heading=document.createElement('h3');heading.className='gallery-group-title';heading.textContent=group.title;
       const gallery=document.createElement('div');gallery.className='detail-gallery live-gallery';
-      group.images.forEach((file,index)=>{const image=document.createElement('img');image.src=`assets/${file}`;image.alt=`${group.title}直播间效果测试 ${index+1}`;image.loading='lazy';gallery.append(image);});
+      group.images.forEach((file,index)=>{const image=document.createElement('img');image.src=`assets/${file}`;image.alt=`${group.title}AI直播间效果测试 ${index+1}`;image.loading='lazy';gallery.append(image);});
       dialogBody.append(heading,gallery);
     });
   } else if (project.images) {
