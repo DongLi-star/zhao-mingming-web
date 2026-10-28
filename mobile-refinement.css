@@ -113,3 +113,20 @@
 .pw-live-pair figcaption{margin-top:12px;font-size:10px;line-height:1.7;color:#826e5b}
 .pw-live-pair figcaption a{display:inline-flex;align-items:center;gap:8px;margin-top:5px;padding-bottom:3px;border-bottom:1px solid #b89070;color:#a24728;font-size:9px}
 @media(max-width:760px){.pw-live-talk .pw-live-pair{margin-top:24px;gap:10px}.pw-live-pair .pw-live-player iframe{max-width:none;border-radius:10px}.pw-live-pair figcaption{font-size:9px}}
+
+/* Approved homepage identity: moderate name size and matching body size/weight. */
+.felt-hero-name{font-size:25px;line-height:1.2;font-weight:650;gap:16px;align-items:baseline;letter-spacing:-.025em}
+.felt-hero-name>span{font:10px/1.5 var(--mono);letter-spacing:.14em;opacity:.68}
+.felt-hero-intro{font-size:18px;line-height:1.7;font-weight:500;margin-top:12px;opacity:1;max-width:550px}
+.felt-hero-role,.felt-hero-description{display:block;font:inherit}
+.felt-hero-role{color:var(--felt-cream)}
+.felt-hero-role b{font:inherit;white-space:nowrap}
+.felt-hero-role i{font:inherit;font-style:normal;color:#f0c16e;padding:0 .28em}
+.felt-hero-description{margin-top:6px;color:#fff3dfd9;text-wrap:pretty}
+.felt-hero-copy .felt-cta{margin-top:24px}
+@media(max-width:760px){
+ .felt-hero-name{font-size:22px;gap:12px}
+ .felt-hero-name>span{font-size:9px}
+ .felt-hero-intro{font-size:16px;line-height:1.7;margin-top:10px;max-width:330px}
+ .felt-hero-copy .felt-cta{margin-top:20px}
+}
