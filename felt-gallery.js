@@ -5,6 +5,30 @@
   const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
   const pad = value => String(value).padStart(2, '0');
 
+  // Start ordinary images before they enter the viewport. Gallery images are
+  // controlled by the visible columns below, so offscreen slides stay deferred.
+  const preloadMargin = '900px 0px';
+  const supportsObserver = 'IntersectionObserver' in window;
+  const loadImage = image => {
+    const source = image.dataset.src;
+    if (!source) return;
+    image.loading = 'eager';
+    image.src = source;
+    delete image.dataset.src;
+  };
+  const ordinaryImages = [...document.querySelectorAll('img[data-src]')]
+    .filter(image => !image.closest('[data-gallery]'));
+  if (supportsObserver) {
+    const imageObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        loadImage(entry.target);
+        imageObserver.unobserve(entry.target);
+      });
+    }, { rootMargin: preloadMargin });
+    ordinaryImages.forEach(image => imageObserver.observe(image));
+  } else ordinaryImages.forEach(loadImage);
+
   document.querySelectorAll('.pw-work [data-gallery]').forEach(gallery => {
     const track = gallery.querySelector('[data-gallery-track]');
     if (!track) return;
@@ -21,6 +45,16 @@
     let wheelTimer = 0;
     let wheelDirection = 0;
     let resizeFrame = 0;
+    let nearby = !supportsObserver;
+
+    function loadGroups(column = currentColumn()) {
+      if (!nearby) return;
+      const start = clamp(Math.floor(column), 0, geometry.maxColumn) * rows;
+      const end = Math.min(items.length, start + geometry.visible * rows * 2);
+      items.slice(start, end).forEach(item => {
+        item.querySelectorAll('img[data-src]').forEach(loadImage);
+      });
+    }
 
     const columnLeft = column => Math.min(geometry.max, Math.max(0, column * geometry.pitch));
     const currentColumn = () => clamp(Math.round(track.scrollLeft / geometry.pitch), 0, geometry.maxColumn);
@@ -60,6 +94,7 @@
     function update() {
       updateFrame = 0;
       const col = currentColumn();
+      loadGroups(col);
       const first = Math.min(items.length, col * rows + 1);
       const last = Math.min(items.length, (col + geometry.visible) * rows);
       const rangeText = `${pad(first)}–${pad(last)}`;
@@ -94,6 +129,7 @@
 
     function goToColumn(column) {
       stopWheel();
+      loadGroups(column);
       track.scrollTo({ left: columnLeft(column), behavior: movement() });
     }
 
@@ -182,5 +218,12 @@
     });
     window.addEventListener('pageshow', event => { if (event.persisted) measure(); });
     measure();
+    if (supportsObserver) {
+      const galleryObserver = new IntersectionObserver(entries => {
+        nearby = entries[0].isIntersecting;
+        if (nearby) loadGroups();
+      }, { rootMargin: preloadMargin });
+      galleryObserver.observe(track);
+    }
   });
 })();
