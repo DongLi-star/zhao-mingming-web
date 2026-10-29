@@ -130,3 +130,92 @@
  .felt-hero-intro{font-size:16px;line-height:1.7;margin-top:10px;max-width:330px}
  .felt-hero-copy .felt-cta{margin-top:20px}
 }
+
+/* Two work divisions keep AI graphics/video distinct from on-set advertising. */
+.pw-work-division-nav{grid-column:1/-1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;margin-top:34px}
+.pw-work-division-nav>a{display:flex;align-items:center;gap:20px;padding:24px 26px;border:1px solid #d7c4a8;border-radius:14px;background:#fff5e6;color:#493a2c;transition:border-color .2s,background .2s}
+.pw-division-index{align-self:flex-start;padding-top:4px;font:10px/1.6 var(--mono);color:#b14c29}
+.pw-work-division-nav strong{display:block;font-size:clamp(20px,2.2vw,30px);font-weight:600;line-height:1.35;letter-spacing:-.035em}
+.pw-work-division-nav small{display:block;margin-top:7px;font-size:12px;line-height:1.6;color:#846e59}
+.pw-work-division-nav .ui-icon{width:24px;height:24px;margin-left:auto;color:#ac502e}
+.pw-part-heading{display:flex;align-items:end;justify-content:space-between;gap:24px;padding:26px 0 28px;border-top:1px solid #c5a47e}
+.pw-part-heading h2{margin-top:12px;font-size:clamp(36px,4.4vw,64px);font-weight:600;line-height:1.2;letter-spacing:-.045em}
+.pw-ai-part{margin-top:64px}
+.pw-ai-type-nav{display:flex;gap:8px;padding-bottom:3px}
+.pw-ai-type-nav>a{padding:9px 17px;border:1px solid #d5bea0;border-radius:24px;color:#9d4d2b;font-size:12px;line-height:1.4}
+.pw-ai-part>.pw-character-chapter{margin-top:0}
+.pw-ai-part>.pw-character-chapter>.pw-chapter-heading{padding-top:12px;border-top:0}
+.pw-ai-video-heading{margin-bottom:12px}
+.pw-work-part,.pw-ai-part>.pw-chapter{scroll-margin-top:12px}
+.pp-stages{display:contents}
+.pp-stage-controls{display:none}
+@media(hover:hover){.pw-work-division-nav>a:hover{border-color:#b66b42;background:#fff0db}.pw-ai-type-nav>a:hover{background:#eee0c9}}
+@media(max-width:1000px) and (min-width:761px){.header-note{display:none}}
+@media(max-width:760px){
+ .pw-work-division-nav{gap:9px;margin-top:17px}
+ .pw-work-division-nav>a{position:relative;gap:7px;align-items:flex-start;padding:14px 12px;border-radius:10px}
+ .pw-division-index{font-size:8px;padding-top:2px}
+ .pw-work-division-nav strong{font-size:clamp(14px,4vw,18px);line-height:1.4;white-space:nowrap}
+ .pw-work-division-nav small{font-size:9px;margin-top:6px}
+ .pw-work-division-nav .ui-icon{position:absolute;right:11px;bottom:12px;width:12px;height:12px}
+ .pw-ai-part{margin-top:30px}
+ .pw-part-heading{align-items:center;gap:12px;padding:18px 0}
+ .pw-part-heading .pw-eyebrow{font-size:7px}
+ .pw-part-heading h2{font-size:28px;margin-top:7px}
+ .pw-ai-type-nav{gap:6px;flex-shrink:0;padding:0}
+ .pw-ai-type-nav>a{font-size:10px;padding:7px 10px}
+ .pw-film-chapter>.pw-part-heading{display:block}
+ .pw-film-chapter>.pw-part-heading .pw-chapter-note{margin-top:12px}
+ .pw-ai-part>.pw-character-chapter>.pw-chapter-heading{padding-top:10px}
+ .pw-ai-part>.pw-character-chapter>.pw-chapter-heading h3{font-size:21px}
+ .pw-work-part,.pw-ai-part>.pw-chapter{scroll-margin-top:12px}
+
+ /* Native horizontal steps: vertical gestures continue down the page. */
+ .pw-portrait-board{padding:16px;overflow:hidden}
+ .pw-portrait-board:before{display:none}
+ .pp-mobile-flow{gap:14px;margin:0 0 18px;padding:0;border:0;background:none}
+ .pp-mobile-flow li{gap:0}
+ .pp-mobile-flow button{display:flex;flex-direction:column;gap:5px;width:100%;min-height:76px;padding:9px 8px;border:1px solid transparent;border-radius:9px;background:none;color:#79614c;text-align:left}
+ .pp-mobile-flow button[aria-current="step"]{background:#fff6e8;border-color:#cfad87;color:#a04b29}
+ .pp-mobile-flow strong{font-size:11px}
+ .pp-mobile-flow small{font-size:7px;white-space:normal}
+ .pp-flow-arrow{right:-12px;top:29px;font-size:11px}
+ .pp-stages{display:grid;grid-auto-flow:column;grid-template-columns:repeat(3,calc(100% - 28px)) 14px;gap:14px;align-items:stretch;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
+ .pp-stages:after{content:''}
+ .pp-stages::-webkit-scrollbar{display:none}
+ .pp-stages>section{position:relative;min-width:0;margin:0;padding:0 2px 0 0;scroll-snap-align:start}
+ .pp-stages>section:before{display:none}
+ .pw-portrait-board .pp-stage-label{margin-bottom:14px;text-align:left}
+ .pw-portrait-board .pp-stage-label h5{font-size:17px}
+ .pw-portrait-board .pp-stage-label p{font-size:9px}
+ .pw-character-chapter .pp-source-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+ .pp-source-grid figure img{height:clamp(106px,33vw,150px);aspect-ratio:auto;object-position:50% 35%}
+ .pp-stages figcaption{font-size:8px;line-height:1.5;margin-top:4px}
+ .pp-generation-steps{grid-template-columns:1fr;gap:9px;padding:0}
+ .pp-generation-steps>div{position:relative;padding:12px 13px 12px 64px;min-height:73px}
+ .pp-generation-steps>div>span{position:absolute;left:12px;top:16px;font-size:7px}
+ .pp-generation-steps strong{font-size:13px;margin:0 0 4px}
+ .pp-generation-steps p{font-size:10px;line-height:1.6}
+ .pp-library-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:10px 6px}
+ .pp-mobile-connector{gap:6px;padding:13px 0 0;font-size:9px;line-height:1.7}
+ .pp-mobile-connector .ui-icon{width:13px;height:13px;flex-shrink:0}
+ .pp-stage-controls{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:17px;color:#9a5a35}
+ .pp-stage-controls>p{display:flex;align-items:center;gap:7px;font-size:10px;line-height:1.7;margin:0}
+ .pp-stage-controls .ui-icon{width:16px;height:16px}
+ .pp-stage-count{font:9px/1.7 var(--mono);white-space:nowrap}
+ .pp-board-footer{margin-top:14px;padding-top:13px}
+ .pp-board-footer>p{display:none}
+ .pp-board-footer>button{width:100%;justify-content:space-between;margin-top:0;font-size:11px}
+ .pp-board-footer>button span{font-size:21px}
+}
+@media(max-width:360px){
+ .pw-work-division-nav>a{padding:13px 9px;gap:5px}
+ .pw-work-division-nav strong{font-size:13px}
+ .pw-work-division-nav small{font-size:8px}
+ .pw-part-heading h2{font-size:25px}
+ .pw-ai-type-nav>a{padding:7px 8px;font-size:9px}
+ .pp-mobile-flow button{padding:8px 5px}
+ .pp-mobile-flow strong{font-size:10px}
+ .pp-generation-steps>div{padding-left:55px}
+ .pp-generation-steps>div>span{left:9px;font-size:6px}
+}
