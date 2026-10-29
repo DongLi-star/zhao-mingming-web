@@ -1,4 +1,4 @@
-/* Gallery controls only. Existing app.js owns every [data-project] click. */
+/* Work galleries and portrait steps. app.js owns every [data-project] click. */
 (() => {
   'use strict';
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -17,7 +17,7 @@
     delete image.dataset.src;
   };
   const ordinaryImages = [...document.querySelectorAll('img[data-src]')]
-    .filter(image => !image.closest('[data-gallery]'));
+    .filter(image => !image.closest('[data-gallery], [data-portrait-stages]'));
   if (supportsObserver) {
     const imageObserver = new IntersectionObserver(entries => {
       entries.forEach(entry => {
@@ -28,6 +28,91 @@
     }, { rootMargin: preloadMargin });
     ordinaryImages.forEach(image => imageObserver.observe(image));
   } else ordinaryImages.forEach(loadImage);
+
+  // The phone case uses one native horizontal track; desktop keeps all three
+  // stages side by side. Prepare only the current and next phone stage nearby.
+  document.querySelectorAll('.pw-portrait-board').forEach(board => {
+    const track = board.querySelector('[data-portrait-stages]');
+    if (!track) return;
+    const stages = [...track.querySelectorAll(':scope > section')];
+    const buttons = [...board.querySelectorAll('[data-portrait-step]')];
+    const range = board.querySelector('[data-portrait-range]');
+    const mobile = window.matchMedia('(max-width:760px)');
+    let active = 0;
+    let nearby = !supportsObserver;
+    let updateFrame = 0;
+    let trackWidth = 0;
+    const stageLeft = index => stages[index].offsetLeft - stages[0].offsetLeft;
+
+    function prepare(index = active) {
+      if (!nearby) return;
+      const visible = mobile.matches ? stages.slice(index, index + 2) : stages;
+      visible.forEach(stage => stage.querySelectorAll('img[data-src]').forEach(loadImage));
+    }
+
+    function update() {
+      updateFrame = 0;
+      if (mobile.matches) {
+        const pitch = stageLeft(1) || 1;
+        active = clamp(Math.round(track.scrollLeft / pitch), 0, stages.length - 1);
+      } else active = 0;
+      buttons.forEach((button, index) => {
+        if (index === active) button.setAttribute('aria-current', 'step');
+        else button.removeAttribute('aria-current');
+      });
+      if (range.textContent !== pad(active + 1)) range.textContent = pad(active + 1);
+      prepare();
+    }
+
+    function goTo(index, animate = true) {
+      if (!mobile.matches) return;
+      const next = clamp(index, 0, stages.length - 1);
+      prepare(next);
+      track.scrollTo({
+        left: stageLeft(next),
+        behavior: animate && !reducedMotion.matches && document.body.classList.contains('is-motion-active') ? 'smooth' : 'auto'
+      });
+    }
+
+    function requestUpdate() {
+      if (!updateFrame) updateFrame = requestAnimationFrame(update);
+    }
+
+    buttons.forEach(button => button.addEventListener('click', () => goTo(Number(button.dataset.portraitStep))));
+    track.addEventListener('scroll', requestUpdate, { passive: true });
+    track.addEventListener('keydown', event => {
+      if (event.target !== track || !mobile.matches || event.altKey || event.ctrlKey || event.metaKey) return;
+      const targets = { ArrowLeft: active - 1, ArrowRight: active + 1, Home: 0, End: stages.length - 1 };
+      if (!(event.key in targets)) return;
+      event.preventDefault();
+      goTo(targets[event.key]);
+    });
+    function setLayout() {
+      track.tabIndex = mobile.matches ? 0 : -1;
+      track.scrollLeft = 0;
+      update();
+    }
+    mobile.addEventListener('change', setLayout);
+    if ('ResizeObserver' in window) new ResizeObserver(entries => {
+      const width = entries[0].contentRect.width;
+      // Image decoding can change height; only a width change needs realignment.
+      if (Math.abs(width - trackWidth) < 1) return;
+      trackWidth = width;
+      goTo(active, false);
+    }).observe(track);
+    if (supportsObserver) {
+      new IntersectionObserver(entries => {
+        nearby = entries[0].isIntersecting;
+        if (nearby) prepare();
+      }, { rootMargin: preloadMargin }).observe(board);
+    }
+    window.addEventListener('pagehide', () => {
+      if (updateFrame) cancelAnimationFrame(updateFrame);
+      updateFrame = 0;
+    });
+    window.addEventListener('pageshow', event => { if (event.persisted) update(); });
+    setLayout();
+  });
 
   document.querySelectorAll('.pw-work [data-gallery]').forEach(gallery => {
     const track = gallery.querySelector('[data-gallery-track]');
