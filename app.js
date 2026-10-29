@@ -575,7 +575,7 @@ function openProject(key, trigger, initialIndex = 0) {
       items.forEach(item => {
         const figure = document.createElement('figure');
         const link = document.createElement('a'); link.href = `assets/${item.src}`; link.target = '_blank'; link.rel = 'noopener noreferrer'; link.setAttribute('aria-label', `打开${item.label}${original ? '实拍' : 'AI 泛化人像'}大图`);
-        const image = document.createElement('img'); image.src = link.href; image.alt = `${item.label} · ${original ? '模特实拍原片' : 'AI 泛化人像'}`; image.loading = 'lazy'; image.width = original ? 600 : 700; image.height = original ? 900 : 700;
+        const image = document.createElement('img'); image.src = link.href; image.alt = `${item.label} · ${original ? '模特实拍原片' : 'AI 泛化人像'}`; image.loading = 'eager'; image.width = original ? 600 : 700; image.height = original ? 900 : 700;
         const caption = document.createElement('figcaption'); caption.textContent = item.label;
         link.append(image); figure.append(link, caption); gallery.append(figure);
       });
@@ -599,7 +599,7 @@ function openProject(key, trigger, initialIndex = 0) {
     project.groups.forEach(group=>{
       const heading=document.createElement('h3');heading.className='gallery-group-title';heading.textContent=group.title;
       const gallery=document.createElement('div');gallery.className='detail-gallery live-gallery';
-      group.images.forEach((file,index)=>{const image=document.createElement('img');image.src=`assets/${file}`;image.alt=`${group.title}AI直播间效果测试 ${index+1}`;image.loading='lazy';gallery.append(image);});
+      group.images.forEach((file,index)=>{const image=document.createElement('img');image.src=`assets/${file}`;image.alt=`${group.title}AI直播间效果测试 ${index+1}`;image.loading='eager';gallery.append(image);});
       dialogBody.append(heading,gallery);
     });
   } else if (project.images) {
@@ -609,7 +609,7 @@ function openProject(key, trigger, initialIndex = 0) {
       const image = document.createElement('img');
       image.src = `assets/${file}`;
       image.alt = `${project.title}，作品 ${index + 1}`;
-      image.loading = 'lazy';
+      image.loading = 'eager';
       gallery.append(image);
     });
     dialogBody.append(gallery);
