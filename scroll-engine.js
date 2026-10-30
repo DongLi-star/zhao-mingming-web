@@ -220,7 +220,7 @@ function mountScrollWorld(container, config) {
         const objectURL = URL.createObjectURL(blob); objectURLs.push(objectURL); v.src = objectURL;
         v.addEventListener('loadedmetadata', () => { s.ready = true; read(); });
         // A completed seek is not proof that iOS/WeChat has painted a frame.
-        // Keep the poster above an invisible video until the compositor confirms it.
+        // Keep the poster visible beneath an almost transparent video until then.
         const revealClip = () => {
           if (destroyed || v.error || v.readyState < 2 || !v.videoWidth || !v.videoHeight) return;
           s.el.classList.add('has-clip');
@@ -423,7 +423,8 @@ function injectCSS() {
   .sw-scene{position:absolute;inset:0;opacity:0;overflow:hidden;will-change:opacity;}
   .sw-scene__video,.sw-scene__still{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 42%;}
   .sw-scene__still{will-change:transform;} .sw-scene.has-clip .sw-scene__still{opacity:0;}
-  .sw-scene__video{z-index:1;opacity:0;} .sw-scene.has-clip .sw-scene__video{opacity:1;}
+  /* A nonzero opacity keeps phone compositors submitting frames for the readiness callback. */
+  .sw-scene__video{z-index:1;opacity:.001;} .sw-scene.has-clip .sw-scene__video{opacity:1;}
   .sw-copylayer{position:fixed;inset:0;z-index:20;pointer-events:none;}
   .sw-copylayer::before{content:"";position:absolute;inset:0;width:min(58vw,780px);background:linear-gradient(90deg,var(--sw-bg) 0%,color-mix(in srgb,var(--sw-bg) 82%,transparent) 34%,color-mix(in srgb,var(--sw-bg) 40%,transparent) 62%,transparent 100%);}
   .sw-copy{position:absolute;left:clamp(18px,5vw,64px);top:50%;transform:translateY(-50%);width:min(42vw,460px);opacity:0;will-change:opacity,transform;}
