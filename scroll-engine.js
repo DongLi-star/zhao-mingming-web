@@ -214,13 +214,29 @@ function mountScrollWorld(container, config) {
         v.className = 'sw-scene__video';
         v.muted = true; v.playsInline = true; v.preload = 'auto';
         v.setAttribute('muted', ''); v.setAttribute('playsinline', '');
+        v.setAttribute('webkit-playsinline', '');
+        v.poster = s.img.currentSrc || s.img.src;
         if (destroyed) return;
         const objectURL = URL.createObjectURL(blob); objectURLs.push(objectURL); v.src = objectURL;
         v.addEventListener('loadedmetadata', () => { s.ready = true; read(); });
-        // Reveal the video (hide the still poster) only once a real frame has
-        // painted — on iOS a seeked-but-never-played muted video stays blank, so
-        // hiding the still on metadata alone would flash an empty scene.
-        v.addEventListener('seeked', () => { s.el.classList.add('has-clip'); }, { once: true });
+        // A completed seek is not proof that iOS/WeChat has painted a frame.
+        // Keep the poster above an invisible video until the compositor confirms it.
+        const revealClip = () => {
+          if (destroyed || v.error || v.readyState < 2 || !v.videoWidth || !v.videoHeight) return;
+          s.el.classList.add('has-clip');
+        };
+        if (typeof v.requestVideoFrameCallback === 'function') {
+          s.frameCallback = v.requestVideoFrameCallback(() => { s.frameCallback = null; revealClip(); });
+        } else {
+          // Older phone browsers must start decoding successfully before replacing
+          // the poster; desktop browsers can also present a paused, seeked frame.
+          v.addEventListener('playing', revealClip, { once: true });
+          v.addEventListener('seeked', () => { if (!isMobile()) revealClip(); }, { once: true });
+        }
+        v.addEventListener('error', () => {
+          s.ready = false;
+          s.el.classList.remove('has-clip');
+        });
         v.addEventListener('loadeddata', () => { try { v.pause(); } catch (e) {} if (userReady) primeVideo(v); });
         s.el.appendChild(v); s.video = v; s.hasClip = true;
       }).catch(() => { s.loading = false; });
@@ -240,7 +256,10 @@ function mountScrollWorld(container, config) {
       s.target = s.linger ? lingerEase(local, s.linger) : local;
       let outside = 0;
       if (y < s.start) outside = s.start - y; else if (y > s.end) outside = y - s.end;
-      const op = smooth(1 - outside / fade);
+      // Boundary scenes remain visible while their sticky viewport enters/leaves.
+      // Fading the first scene before its start hides the entire phone preview.
+      const boundary = (i === 0 && y < s.start) || (i === NSEG - 1 && y > s.end);
+      const op = boundary ? 1 : smooth(1 - outside / fade);
       s.el.style.opacity = op; s.visible = op > 0.001;
       s.el.style.zIndex = (i === ci) ? '120' : String(100 + Math.round(op * 10));
       if (!s.hasClip || !s.ready) {
@@ -337,7 +356,10 @@ function mountScrollWorld(container, config) {
     destroyed = true; controller.abort(); cancelAnimationFrame(frameID); cancelAnimationFrame(readID);
     window.removeEventListener('scroll', onScroll); window.removeEventListener('resize', onResize); window.removeEventListener('orientationchange', layout); window.removeEventListener('load', layout);
     window.removeEventListener('pointerdown', onFirstGesture); window.removeEventListener('touchstart', onFirstGesture);
-    SEGMENTS.forEach(s => { if (s.video) { s.video.pause(); s.video.removeAttribute('src'); s.video.load(); } });
+    SEGMENTS.forEach(s => { if (s.video) {
+      if (s.frameCallback != null && s.video.cancelVideoFrameCallback) s.video.cancelVideoFrameCallback(s.frameCallback);
+      s.video.pause(); s.video.removeAttribute('src'); s.video.load();
+    } });
     objectURLs.forEach(url => URL.revokeObjectURL(url)); container.replaceChildren();
   } };
 
@@ -400,7 +422,8 @@ function injectCSS() {
   .sw-stage{position:fixed;inset:0;z-index:10;pointer-events:none;}
   .sw-scene{position:absolute;inset:0;opacity:0;overflow:hidden;will-change:opacity;}
   .sw-scene__video,.sw-scene__still{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 42%;}
-  .sw-scene__still{will-change:transform;} .sw-scene.has-clip .sw-scene__still{opacity:0;} .sw-scene__video{z-index:1;}
+  .sw-scene__still{will-change:transform;} .sw-scene.has-clip .sw-scene__still{opacity:0;}
+  .sw-scene__video{z-index:1;opacity:0;} .sw-scene.has-clip .sw-scene__video{opacity:1;}
   .sw-copylayer{position:fixed;inset:0;z-index:20;pointer-events:none;}
   .sw-copylayer::before{content:"";position:absolute;inset:0;width:min(58vw,780px);background:linear-gradient(90deg,var(--sw-bg) 0%,color-mix(in srgb,var(--sw-bg) 82%,transparent) 34%,color-mix(in srgb,var(--sw-bg) 40%,transparent) 62%,transparent 100%);}
   .sw-copy{position:absolute;left:clamp(18px,5vw,64px);top:50%;transform:translateY(-50%);width:min(42vw,460px);opacity:0;will-change:opacity,transform;}
